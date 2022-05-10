@@ -82,6 +82,18 @@ def getIndice():
     jsonresp = json.dumps(resp['_source'], indent=4)
     print(jsonresp)
     return resp['_source']
+@app.get("/Allindex")
+def getIndice():
+    schema = es.indices.get(index="*")## python dict with the map of the cluster
+
+    #ust_indices = [index for index in indices_full_list if not index.startswith(".")] ## remove the objects created by marvel, e.g. ".marvel-date"
+    # resp = es.indices.get_alias("*")
+    # print(resp['_source'])
+    # jsonresp = json.dumps(resp['_source'], indent=4)
+    jsonresp = json.dumps(schema, indent=4)
+    print(jsonresp)
+    #print(schema)
+    return schema
 
 #---------------------------MAIN----------------------------------------------------------------
 if __name__ == "__main__":
