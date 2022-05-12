@@ -11,7 +11,7 @@ doc = {
 }
 
 df = pd.read_json("archivosDePrueba/docs.json")
-resp = es.index(index="test-index", id=1, document=df.to_json(orient='index', indent=2))
+resp = es.index(index="test-index", id=1, document=doc)
 
 
 
@@ -22,11 +22,36 @@ print(resp)
 print("------------------------------------------------------")
 
 
+
+print("-------------------UPDATE--------------------------")#si no está la key lo añade y si no, modifica el valor
+
+
+doc1 = {
+    'dadada': 'author_name',
+    'text': 'Interensting modified content...',
+    'timestamp': datetime.now(),
+}
+resp1 = es.update(index="test-index", id=1, doc=doc1)
+print(resp1)
+
+
+
+
+
 print("-------------------GET--------------------------")
-resp = es.get(index="test-index", id=2)
+resp = es.get(index="test-index", id=1)
 print(resp['_source'])
 print("------------------------------------------------------")
 # es.indices.refresh(index="test-index")
+
+
+
+
+
+
+
+
+
 
 resp = es.search(index="test-index", query={"match_all": {}})
 print("Got %d Hits:" % resp['hits']['total']['value'])
