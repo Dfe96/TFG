@@ -6,7 +6,7 @@
 #pip install python-multipart
 import http.client
 
-import fastapi
+
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
@@ -17,10 +17,10 @@ import json
 from pydantic import BaseModel
 from typing import Optional,Any, Dict, AnyStr, List, Union
 
-import matplotlib.pyplot as plt
-import requests
-from PIL import Image
-import io
+#import matplotlib.pyplot as plt
+#import requests
+#from PIL import Image
+#import io
 
 app = FastAPI()
 es = Elasticsearch("http://localhost:9200")
@@ -84,17 +84,16 @@ def getIndice(index: str, id: Any):
 
 @app.get("/allindex")
 def getIndice():
-    schema = es.indices.get_alias("*")
-    #schema = es.indices.get(index="test-index")## python dict with the map of the cluster
-    #schema = es.search(index='test-index', filter_path=['hits.hits._*'])
-    #ust_indices = [index for index in indices_full_list if not index.startswith(".")] ## remove the objects created by marvel, e.g. ".marvel-date"
-    # resp = es.indices.get_alias("*")
-    # print(resp['_source'])
-    # jsonresp = json.dumps(resp['_source'], indent=4)
-    jsonresp = json.dumps(schema, indent=4)
-    print(jsonresp)
-    #print(schema)
-    return schema
+
+    schema = es.indices.get_alias().keys()
+
+    allindexlist=[]
+    for value in schema:
+        print(value)
+        allindexlist.append(value)
+    print(allindexlist)
+
+    return str(allindexlist)
 
 
 
