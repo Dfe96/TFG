@@ -46,7 +46,7 @@ def get_iris():
 
     #url ='https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv'
     url = "docs.json"
-    df = pd.read_json("archivosDePrueba/docs.json")
+    df = pd.read_json("../archivosDePrueba/docs.json")
     print(df)
     return(df.to_json())
 
@@ -62,7 +62,7 @@ def plot_iris():
 
     plt.scatter(iris['sepal_length'], iris['sepal_width'])
     plt.savefig('iris.png')
-    file = open('iris.png', mode="rb")
+    file = open('../iris.png', mode="rb")
 
     return StreamingResponse(file, media_type="image/png")
 #-------------------------------------------------------------------------------------------#-------------------------------------------------------------------------------------------#-------------------------------------------------------------------------------------------

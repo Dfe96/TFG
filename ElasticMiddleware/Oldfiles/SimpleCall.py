@@ -10,7 +10,7 @@ doc = {
     'timestamp': datetime.now(),
 }
 
-df = pd.read_json("archivosDePrueba/docs.json")
+df = pd.read_json("../archivosDePrueba/docs.json")
 resp = es.index(index="test-index", id=1, document=doc)
 
 

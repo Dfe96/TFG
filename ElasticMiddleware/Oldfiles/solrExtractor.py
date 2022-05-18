@@ -8,10 +8,10 @@ query = "http://librairy.linkeddata.es/solr/covid-paragraphs/select?_=1651683035
 response = requests.get(query).json()
 
 #creamos un archivo.json y guardamos la info ordenada, tambn parseamos para que pille solamente 'docs' dentro del json
-with open("archivosDePrueba/docs.json",'w') as file:
+with open("../archivosDePrueba/docs.json", 'w') as file:
     json.dump(response['response']['docs'],file,indent=2)
 
 #print de prueba del archivo guardado
-df = pd.read_json("archivosDePrueba/docs.json")
+df = pd.read_json("../archivosDePrueba/docs.json")
 print(df.to_json(orient='index', indent=2))
 print("--------------------------------------------------------------------------")
