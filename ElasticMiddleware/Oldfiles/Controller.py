@@ -23,7 +23,7 @@ from typing import Optional,Any, Dict, AnyStr, List, Union
 #import io
 
 app = FastAPI()
-es = Elasticsearch("http://localhost:9200")
+es = Elasticsearch("http://172.28.0.2:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
 
 #----------------------------simple type annotation structure to receive the arbitrary JSON data.-----------------------------------------
 class Item(BaseModel):
@@ -146,7 +146,7 @@ def getIndice():
     return query
 #---------------------------MAIN----------------------------------------------------------------
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
 
 
 
