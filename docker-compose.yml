@@ -1,5 +1,21 @@
 version: '2.2'
 services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+      NODE_OPTIONS: "--unhandled-rejections=strict"
+
+    volumes:
+      - ./mongo-data:/data/db
+    networks:
+      - elastic
+
   elasticmiddleware:
       build: ./ElasticMiddleware
       ports:

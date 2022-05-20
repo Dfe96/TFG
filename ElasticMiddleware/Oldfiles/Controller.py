@@ -4,6 +4,7 @@
 #pip install aiofiles
 #pip install matplotlib
 #pip install python-multipart
+#pip install pymongo
 import http.client
 
 
@@ -16,20 +17,118 @@ import pandas as pd
 import json
 from pydantic import BaseModel
 from typing import Optional,Any, Dict, AnyStr, List, Union
-
+from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
+import bson.json_util as json_util
 #import matplotlib.pyplot as plt
 #import requests
 #from PIL import Image
 #import io
 
+#MONGO CLIENT CONFIG
+
+try:
+    # 27017 is the default port number for mongodb
+    uri = 'mongodb://root:1234@127.28.0.2/admin'
+    connect = MongoClient(uri)
+    print("MongoDB cluster is reachable")
+
+    db = connect.myDb
+    collection = db.demoCollection
+
+
+
+
+    try:
+        print("a")
+    except Exception as e:
+        raise e
+
+
+
+
+
+except ConnectionFailure as e:
+    print("[+] Database connection error!")
+    raise e
+
+
+#ELASTIC CLIENT CONFIG
 app = FastAPI()
 es = Elasticsearch("http://172.28.0.2:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
+
+
+
+
+
+
+
+
+
+
+
+
 
 #----------------------------simple type annotation structure to receive the arbitrary JSON data.-----------------------------------------
 class Item(BaseModel):
     requests: List[Any]
 
-#------------------------------------------------------------------------------------------------.-----------------------------------------
+#-------------------------------------------------CRUD MONGODB ------------------------------------.-----------------------------------------
+@app.post("/newUser",status_code=201)
+async def createUser(user:str, password: str ):
+    try:
+        credentials = {
+            "user":str(user),
+            "password":str(password)
+
+        }
+
+        collection.insert_one(credentials)
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        return str(e)
+
+@app.get("/users")
+def getUsers():
+    cursor = collection.find()
+
+
+    allusers={"Paper": 3}
+    a = {"cars": 1, "houses": 2, "schools": 3, "stores": 4}
+    b = {"Pens": 1, "Pencils": 2, "Paper": 3}
+    for record in cursor:
+        a.update(record),
+
+        print (allusers)
+    dict(allusers)
+    print(allusers)
+
+
+
+
+
+    a.update(b)
+    print(a)
+    return a
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#-------------------------------------------------REACHING MIDDLEWARE CALLS  ------------------------------------.-----------------------------------------
+# /my-first-api call it is just a mock call to see if we can reach the middleware
 @app.get("/my-first-api")
 def hello(name = None):
 
@@ -44,7 +143,7 @@ def hello(name = None):
 def get_iris():
 
 
-    #url ='https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv'
+
     url = "docs.json"
     df = pd.read_json("../archivosDePrueba/docs.json")
     print(df)
@@ -52,7 +151,7 @@ def get_iris():
 
 
 
-#----------------------------------------------------------CRUD OPERATIONS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------CRUD Elasticsearch --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/newIndex",status_code=201)
 async def root(request: Request,index, id: Any = 1):
