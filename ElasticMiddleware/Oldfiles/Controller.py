@@ -5,13 +5,12 @@
 #pip install matplotlib
 #pip install python-multipart
 #pip install pymongo
-import http.client
+#import http.client
 
 
 import uvicorn
 from fastapi import FastAPI, Request
-from fastapi.responses import StreamingResponse
-from datetime import datetime
+
 from elasticsearch import Elasticsearch, helpers
 import pandas as pd
 import json
@@ -19,7 +18,6 @@ from pydantic import BaseModel
 from typing import Optional,Any, Dict, AnyStr, List, Union
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
-import bson.json_util as json_util
 #import matplotlib.pyplot as plt
 #import requests
 #from PIL import Image
@@ -30,7 +28,7 @@ from starlette.responses import JSONResponse
 
 try:
     # 27017 is the default port number for mongodb
-    uri = 'mongodb://root:1234@127.28.0.2/admin'
+    uri = 'mongodb://root:1234@localhost/admin'
     connect = MongoClient(uri)
     print("MongoDB cluster is reachable")
 
@@ -56,7 +54,7 @@ except ConnectionFailure as e:
 
 #ELASTIC CLIENT CONFIG
 app = FastAPI()
-es = Elasticsearch("http://172.28.0.3:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
+es = Elasticsearch("http://localhost:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
 
 
 
