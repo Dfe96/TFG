@@ -22,7 +22,7 @@ from typing import Optional,Any, Dict, AnyStr, List, Union
 #import io
 
 app = FastAPI()
-es = Elasticsearch("http://172.28.0.2:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
+es = Elasticsearch("http://172.28.0.3:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
 
 #----------------------------simple type annotation structure to receive the arbitrary JSON data.-----------------------------------------
 class Item(BaseModel):

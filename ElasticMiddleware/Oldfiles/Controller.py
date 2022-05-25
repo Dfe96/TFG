@@ -26,6 +26,7 @@ import bson.json_util as json_util
 #import io
 
 #MONGO CLIENT CONFIG
+from starlette.responses import JSONResponse
 
 try:
     # 27017 is the default port number for mongodb
@@ -33,7 +34,7 @@ try:
     connect = MongoClient(uri)
     print("MongoDB cluster is reachable")
 
-    db = connect.myDb
+    db=connect.myDb
     collection = db.demoCollection
 
 
@@ -55,7 +56,7 @@ except ConnectionFailure as e:
 
 #ELASTIC CLIENT CONFIG
 app = FastAPI()
-es = Elasticsearch("http://172.28.0.2:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
+es = Elasticsearch("http://172.28.0.3:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
 
 
 
@@ -77,43 +78,99 @@ class Item(BaseModel):
 @app.post("/newUser",status_code=201)
 async def createUser(user:str, password: str ):
     try:
+
         credentials = {
             "user":str(user),
             "password":str(password)
 
         }
+        if collection.count_documents({"user": user}) != 0:#if user exist we send error mesage and break operation
 
-        collection.insert_one(credentials)
+            return JSONResponse (status_code=400, content="user already exist.")
+        else:
+
+            collection.insert_one(credentials)
+            userfind=collection.find_one({"user": user}, {"_id":0})
+            print("colis\n")
+            print(userfind)
+            return JSONResponse (status_code=201,
+                                 content=userfind
+                                 )
     except Exception as e:
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         print(e)
         return str(e)
 
-@app.get("/users")
+@app.get("/allusers")
 def getUsers():
-    cursor = collection.find()
+    allusers=[]
+    list(allusers)
+    col=collection.find({}, {"_id":0})
+    for x in col :
+        allusers.append(x)
 
+        print(x)
 
-    allusers={"Paper": 3}
-    a = {"cars": 1, "houses": 2, "schools": 3, "stores": 4}
-    b = {"Pens": 1, "Pencils": 2, "Paper": 3}
-    for record in cursor:
-        a.update(record),
-
-        print (allusers)
-    dict(allusers)
     print(allusers)
+    return allusers
+
+@app.delete("/users")
+async def deleteUSer(user:str):
+    # collection.deleteOne({name:"Maki"})
 
 
 
+    try:
 
 
-    a.update(b)
-    print(a)
-    return a
+        if collection.count_documents({"user": user}) != 0:#if user exist  send  mesage and performt operation
+            userfind=collection.find_one({"user": user}, {"_id":0})
+            collection.delete_one({'user': str(user)})
+            # result.deleted_count
+
+
+            print("colis\n")
+            print(userfind)
+            return JSONResponse (status_code=200,
+                                 content=userfind
+                                 )
 
 
 
+        else:
+
+
+            return JSONResponse (status_code=400, content="user doesnt exist.")
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        return str(e)
+
+
+
+@app.get("/users")
+async def getUser(user:str):
+    try:
+
+
+        if collection.count_documents({"user": user}) != 0:#if user exist  send  mesage and performt operation
+            userfind=collection.find_one({"user": user}, {"_id":0})
+            print("colis\n")
+            print(userfind)
+            return JSONResponse (status_code=200,
+                                 content=userfind
+                                 )
+
+
+
+        else:
+
+
+            return JSONResponse (status_code=400, content="user doesnt exist.")
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        return str(e)
 
 
 
