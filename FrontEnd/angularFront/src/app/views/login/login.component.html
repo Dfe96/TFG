@@ -1,28 +1,27 @@
-<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
----- Include the above in your HEAD tag -------- -->
 
-<div class="wrapper fadeInDown">
-  <div id="formContent">
-    <!-- Tabs Titles -->
+<!-- login.component.html -->
 
-    <!-- Icon -->
-    <div class="fadeIn first">
-      <img src="assets/logooeg.png" id="icon" alt="User Icon" />
-    </div>
-
-    <!-- Login Form -->
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-      <input type="text" id="login" class="fadeIn second"  placeholder="login" formControlName="user">
-      <input type="text" id="password" class="fadeIn third" type="Password"  placeholder="password"formControlName="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
-    </form>
-
-    <!-- Remind Passowrd -->
-    <div id="formFooter">
-      <a class="underlineHover" href="#">Forgot Password?</a>
-    </div>
-
+<div class="login">
+  <div class="fadeIn first">
+    <img   class="fadeIn first" src="assets/logooeg.png" alt="HTML5 Icon" alt="User Icon" style="width:128px;height:128px;" />
   </div>
+
+  <form class="custom-form" method="post">
+    <h1>Login</h1>
+    <input
+      type="user"
+      [(ngModel)]="user"
+      name="user"
+      placeholder="user"
+      required="required"
+    />
+    <input
+      type="password"
+      [(ngModel)]="password"
+      name="password"
+      placeholder="Password"
+      required="required"
+    />
+    <button type="submit" (click)="login()">Log in</button>
+  </form>
 </div>

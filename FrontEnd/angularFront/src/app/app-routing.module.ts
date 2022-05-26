@@ -7,20 +7,20 @@ import { LoginComponent } from './views/login/login.component';
 import { NewComponent } from './views/new/new.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EditComponent } from './views/edit/edit.component';
+import { FormsModule } from '@angular/forms';
 
-
-const routes: Routes = [
+const appRoutes: Routes = [
   {path:'',redirectTo:'login',pathMatch:'full'},
-  {path:'login',component:LoginComponent},
-  {path:'dashboard',component:DashboardComponent},
-  {path:'new',component:NewComponent},
-  {path:'edit',component:EditComponent}
+  {path:'login',component:LoginComponent,pathMatch: "full"},
+  {path:'dashboard',component:DashboardComponent, pathMatch: "full"},
+  {path:'new',component:NewComponent, pathMatch: "full"},
+  {path:'edit',component:EditComponent,pathMatch: "full"}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
 
-export const routingComponents=[LoginComponent,DashboardComponent,NewComponent,EditComponent]
+export const routingComponents=RouterModule.forRoot(appRoutes);

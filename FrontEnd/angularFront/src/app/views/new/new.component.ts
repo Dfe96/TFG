@@ -1,15 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+// register.component.ts
+
+import { Component } from "@angular/core";
+import{ApiService}from "../../services/api/api.service"
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-new',
-  templateUrl: './new.component.html',
-  styleUrls: ['./new.component.css']
+  selector: "app-register",
+  templateUrl: "./new.component.html",
+  styleUrls: ["./new.component.css"]
 })
-export class NewComponent implements OnInit {
+export class NewComponent {
+  user!: string;
+  password!: string;
+  confirmPassword!: string;
+  passwordError!: boolean;
 
-  constructor() { }
+  constructor(public ApiService: ApiService,public router: Router) {}
 
-  ngOnInit(): void {
+  register() {
+    const user = { email: this.user, password: this.password };
+    this.ApiService.register(user).subscribe(data => {
+      this.ApiService.setToken(data.token);
+      this.router.navigateByUrl('/');
+
+    },
+     error => {
+      console.log(error);
+    });
   }
-
 }

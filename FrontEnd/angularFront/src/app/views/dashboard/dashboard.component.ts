@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import{ApiService} from '../../services/api/api.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(public ApiService: ApiService) {}
+  ngOnInit() {
+    this.getUserLogged();
   }
-
+  getUserLogged() {
+    this.ApiService.getUser().subscribe(user => {
+      console.log(user);
+    });
+  }
 }

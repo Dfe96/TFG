@@ -1,26 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import{FormGroup,FormControl,Validators} from '@angular/forms'
+import{ApiService} from '../../services/api/api.service';
+import{LoginI} from '../../models/login.interface';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  user!: string;
+  password!: string;
 
-  loginForm= new FormGroup({
-    user: new FormControl('',Validators.required),
-    password: new FormControl('',Validators.required),
-  })
+  constructor(public ApiService: ApiService, public router: Router) {}
 
+  login() {
+    const user = {email: this.user, password: this.password};
+    this.ApiService.login(user).subscribe( data => {
+      this.ApiService.setToken(data.token);
+      this.router.navigateByUrl('dashboard');
 
-
-
-  constructor() { }
-
-  ngOnInit(): void {
+    },
+    error => {
+      console.log(error);
+    });
   }
-  onLogin(form){
-    console.log(form)
-  }
-
 }
