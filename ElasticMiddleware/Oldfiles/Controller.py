@@ -9,15 +9,23 @@
 
 
 import uvicorn
-from fastapi import FastAPI, Request
 
-from elasticsearch import Elasticsearch, helpers
+from elasticsearch import Elasticsearch
 import pandas as pd
 import json
-from pydantic import BaseModel
-from typing import Optional,Any, Dict, AnyStr, List, Union
+from fastapi import FastAPI, HTTPException, Depends, Request,status
+from typing import Any, List
+
+from fastapi.security import OAuth2PasswordRequestForm
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
+from fastapi.middleware.cors import CORSMiddleware
+from src.models.user import *
+from src.models.token import *
+
+from src.services.jwttoken import create_access_token
+from src.services.hashing import *
+from src.services.oauth import get_current_user
 #import matplotlib.pyplot as plt
 #import requests
 #from PIL import Image
@@ -27,23 +35,27 @@ from pymongo.errors import ConnectionFailure
 from starlette.responses import JSONResponse
 
 try:
-    # 27017 is the default port number for mongodb
-    uri = 'mongodb://root:1234@localhost/admin'
-    connect = MongoClient(uri)
-    print("MongoDB cluster is reachable")
+    app = FastAPI()
+    origins = [
+        "http://localhost:9200",
+        "http://localhost:27017",
+    ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
+    #Mongo CLIENT CONFIG
+    uri = 'mongodb://root:1234@172.18.0.2/admin'# 27017 is the default port number for mongodb
+    connect = MongoClient(uri)
     db=connect.myDb
     collection = db.demoCollection
+    # db = connect["User"]
+    #ELASTIC CLIENT CONFIG
 
-
-
-
-    try:
-        print("a")
-    except Exception as e:
-        raise e
-
-
+    es = Elasticsearch("http://localhost:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
 
 
 
@@ -52,9 +64,6 @@ except ConnectionFailure as e:
     raise e
 
 
-#ELASTIC CLIENT CONFIG
-app = FastAPI()
-es = Elasticsearch("http://localhost:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
 
 
 
@@ -73,22 +82,66 @@ class Item(BaseModel):
     requests: List[Any]
 
 #-------------------------------------------------CRUD MONGODB ------------------------------------.-----------------------------------------
+@app.get("/")
+def read_root(current_user:User = Depends(get_current_user)):
+    return {"data":"Hello OWrld"}
+
+@app.post('/register')
+def create_user(request:User):
+    try:
+        hashed_pass = Hash.bcrypt(request.password)
+        user_object = dict(request)
+        user_object["password"] = hashed_pass
+
+        print(str(user_object["username"]))
+        if collection.count_documents({"username": str(user_object["username"])}) != 0:#if user exist we send error mesage and break operation
+
+            return JSONResponse (status_code=400, content="username already exist.")
+        else:
+
+            user_id = collection.insert_one(user_object)
+            print(request)
+            return JSONResponse (status_code=201,
+                                 content={"res":"created"}
+                                 )
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        return str(e)
+
+
+
+
+
+
+@app.post('/login')
+def login(request:OAuth2PasswordRequestForm = Depends()):
+    user = collection.find_one({"username":request.username})
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'No user found with this {request.username} username')
+    if not Hash.verify(user["password"],request.password):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'Wrong Username or password')
+    access_token = create_access_token(data={"sub": user["username"] })
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+
 @app.post("/newUser",status_code=201)
-async def createUser(user:str, password: str ):
+async def createUser(username:str, password: str ):
     try:
 
         credentials = {
-            "user":str(user),
+            "username":str(username),
             "password":str(password)
 
         }
-        if collection.count_documents({"user": user}) != 0:#if user exist we send error mesage and break operation
+        if collection.count_documents({"username": username}) != 0:#if user exist we send error mesage and break operation
 
-            return JSONResponse (status_code=400, content="user already exist.")
+            return JSONResponse (status_code=400, content="username already exist.")
         else:
 
             collection.insert_one(credentials)
-            userfind=collection.find_one({"user": user}, {"_id":0})
+            userfind=collection.find_one({"username": username}, {"_id":0})
             print("colis\n")
             print(userfind)
             return JSONResponse (status_code=201,
@@ -113,7 +166,7 @@ def getUsers():
     return allusers
 
 @app.delete("/users")
-async def deleteUSer(user:str):
+async def deleteUSer(username:str):
     # collection.deleteOne({name:"Maki"})
 
 
@@ -121,9 +174,9 @@ async def deleteUSer(user:str):
     try:
 
 
-        if collection.count_documents({"user": user}) != 0:#if user exist  send  mesage and performt operation
-            userfind=collection.find_one({"user": user}, {"_id":0})
-            collection.delete_one({'user': str(user)})
+        if collection.count_documents({"username": username}) != 0:#if user exist  send  mesage and performt operation
+            userfind=collection.find_one({"username": username}, {"_id":0})
+            collection.delete_one({'username': str(username)})
             # result.deleted_count
 
 
@@ -147,12 +200,12 @@ async def deleteUSer(user:str):
 
 
 @app.get("/users")
-async def getUser(user:str):
+async def getUser(username:str):
     try:
 
 
-        if collection.count_documents({"user": user}) != 0:#if user exist  send  mesage and performt operation
-            userfind=collection.find_one({"user": user}, {"_id":0})
+        if collection.count_documents({"username": username}) != 0:#if user exist  send  mesage and performt operation
+            userfind=collection.find_one({"username": username}, {"_id":0})
             print("colis\n")
             print(userfind)
             return JSONResponse (status_code=200,
@@ -164,7 +217,7 @@ async def getUser(user:str):
         else:
 
 
-            return JSONResponse (status_code=400, content="user doesnt exist.")
+            return JSONResponse (status_code=400, content="username doesnt exist.")
     except Exception as e:
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         print(e)
