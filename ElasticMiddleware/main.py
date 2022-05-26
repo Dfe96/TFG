@@ -37,8 +37,8 @@ from starlette.responses import JSONResponse
 try:
     app = FastAPI()
     origins = [
-        "http://localhost:9200",
-        "http://localhost:27017",
+        "http://db:9200",
+        "http://es01:27017",
     ]
     app.add_middleware(
         CORSMiddleware,
@@ -48,14 +48,14 @@ try:
     )
 
     #Mongo CLIENT CONFIG
-    uri = 'mongodb://root:1234@172.18.0.2/admin'# 27017 is the default port number for mongodb
+    uri = 'mongodb://root:1234@db/admin'# 27017 is the default port number for mongodb
     connect = MongoClient(uri)
     db=connect.myDb
     collection = db.demoCollection
     # db = connect["User"]
     #ELASTIC CLIENT CONFIG
 
-    es = Elasticsearch("http://localhost:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
+    es = Elasticsearch("http://es01:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
 
 
 
