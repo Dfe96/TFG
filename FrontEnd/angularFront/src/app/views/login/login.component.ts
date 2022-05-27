@@ -1,29 +1,62 @@
 import { Component, OnInit } from '@angular/core';
-import{FormGroup,FormControl,Validators} from '@angular/forms'
+import{FormGroup,FormBuilder,FormControl,Validators} from '@angular/forms'
 import{ApiService} from '../../services/api/api.service';
 import{LoginI} from '../../models/login.interface';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ResponseI } from 'src/app/models/response.interface';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  user!: string;
+  username!: string;
   password!: string;
+  form: FormGroup;
 
-  constructor(public ApiService: ApiService, public router: Router) {}
+  constructor(
+    public ApiService: ApiService,
+    public router: Router,
+    public fb: FormBuilder,
+    private http: HttpClient
+   ) {
+     this.form = this.fb.group({
+      username: '',
+      password: ''
+     })
+   }
+   ngOnInit() {
+    this.checkLocalStorage();
+  }
+  checkLocalStorage(){
+    if(localStorage.getItem('token')){
+      this.router.navigateByUrl('/dashboard');
+    }
+  }
 
   login() {
-    const user = {email: this.user, password: this.password};
-    this.ApiService.login(user).subscribe( data => {
-      this.ApiService.setToken(data.token);
-      this.router.navigateByUrl('dashboard');
-
+    var formData: any = new FormData();
+    formData.append("username", this.username);
+    formData.append("password", this.password);
+    
+    console.log(this.username)
+    console.log(this.password)
+    this.ApiService.login(formData).subscribe(data => {
+      let dataresponse:ResponseI=data
+        console.log(dataresponse.access_token)
+        this.ApiService.setToken(dataresponse.access_token);
+        localStorage.setItem("token",dataresponse.access_token)
+        this.router.navigateByUrl('/dashboard');
     },
     error => {
       console.log(error);
     });
+
+    
+     
+    
   }
 }

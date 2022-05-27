@@ -36,12 +36,15 @@ from starlette.responses import JSONResponse
 
 try:
     app = FastAPI()
+    app = FastAPI()
     origins = [
-        "http://db:9200",
-        "http://es01:27017",
+        "http://localhost:9200",
+        "http://localhost:27017",
+        "http://localhost:4200"
     ]
     app.add_middleware(
         CORSMiddleware,
+        allow_origins=['*'],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -75,6 +78,8 @@ except ConnectionFailure as e:
 
 
 
+
+#----------------------------Here starts MAIN.py-----------------------------------------
 
 
 #----------------------------simple type annotation structure to receive the arbitrary JSON data.-----------------------------------------
@@ -116,14 +121,20 @@ def create_user(request:User):
 
 @app.post('/login')
 def login(request:OAuth2PasswordRequestForm = Depends()):
-    user = collection.find_one({"username":request.username})
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'No user found with this {request.username} username')
-    if not Hash.verify(user["password"],request.password):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'Wrong Username or password')
-    access_token = create_access_token(data={"sub": user["username"] })
-    return {"access_token": access_token, "token_type": "bearer"}
+    try:
+        user = collection.find_one({"username":request.username})
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'No user found with this {request.username} username')
+        if not Hash.verify(user["password"],request.password):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail = f'Wrong Username or password')
+        access_token = create_access_token(data={"sub": user["username"] })
+        return JSONResponse(status_code=200,
+                            content={"access_token": access_token, "token_type": "bearer"})
 
+    except HTTPException as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
+        raise e
 
 
 @app.post("/newUser",status_code=201)
@@ -351,4 +362,5 @@ async def root(request: Request,index, id: Any = 1):
 def getIndice():
     query= es.search(index="test-index",query=[])
     return query
-#---------------------------MAIN----------------------------------------------------------------
+
+#----------------------------Here ENDS MAIN.py-----------------------------------------

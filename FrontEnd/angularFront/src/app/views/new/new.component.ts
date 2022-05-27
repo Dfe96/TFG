@@ -22,7 +22,7 @@ export class NewComponent {
     this.ApiService.register(user).subscribe(data => {
       this.ApiService.setToken(data.token);
       this.router.navigateByUrl('/');
-
+      
     },
      error => {
       console.log(error);

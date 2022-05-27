@@ -9,11 +9,26 @@ import { CookieService } from "ngx-cookie-service";
 })
 export class ApiService {
   url:string="http://localhost:27017"
+  errorMessage;
+  form: any;
 
   constructor(private http:HttpClient,private cookies: CookieService) { }
-  login(user: any): Observable<any> {
-    return this.http.post("https://reqres.in/api/login", user);
+  
+
+  login(form: any): Observable<any> {
+    return this.http.post<ResponseI>("http://127.0.0.1:8001/login", form);
+    /* return this.http.post("https://reqres.in/api/login", username); */
   }
+
+  /* login(user: any): Observable<any> {
+    var formData: any = new FormData();
+    formData.append("username", this.form.get('username').value);
+    formData.append("password", this.form.get('password').value);
+    return this.http.post('http://127.0.0.1:8000/login', formData)
+    
+  } */
+
+  
   register(user: any): Observable<any> {
     return this.http.post("https://reqres.in/api/register", user);
   }
@@ -23,8 +38,9 @@ export class ApiService {
   getToken() {
     return this.cookies.get("token");
   }
-  getUser() {
-    return this.http.get("https://reqres.in/api/users/2");
+  getUser(user: any): Observable<any> {
+    return this.http.get("http://127.0.0.1:8001/user",{
+      params: { username:user }});
   }
   getUserLogged() {
     const token = this.getToken();
