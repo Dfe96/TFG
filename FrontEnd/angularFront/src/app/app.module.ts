@@ -13,6 +13,7 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import  {HttpClientModule} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +23,8 @@ import { CookieService } from 'ngx-cookie-service';
     LoginComponent,
     NewComponent,
     DashboardComponent,
-    EditComponent
+    EditComponent,
+
   ],
   imports: [
     BrowserModule,

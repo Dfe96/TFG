@@ -53,5 +53,12 @@ export class ApiService {
     const token = this.getToken();
     // Aquí iría el endpoint para devolver el usuario para un token
   }
+  postIndex(index: any,id: any,json: any) {
+    let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
+    return this.http.post("http://127.0.0.1:8001/newIndex",json, {params: params})
+    
+  }
+
+  
 
 }

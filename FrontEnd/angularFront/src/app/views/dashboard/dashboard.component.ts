@@ -12,6 +12,10 @@ export class DashboardComponent implements OnInit {
   id!: string;
   index!: JSON;
   indexresult!:JSON;
+  indexresult1!:any;
+  indexInput!:JSON;
+  idinput!: string;
+  docinput!: JSON;
   constructor(
     public ApiService: ApiService,
  
@@ -37,6 +41,14 @@ export class DashboardComponent implements OnInit {
 
         console.log(data)
         this.indexresult=data
+    })
+  }
+  postindex(){
+    this.ApiService.postIndex(this.indexInput,this.idinput,this.docinput).subscribe(data => {
+
+        console.log(data)
+        this.indexresult1=data
+        
     })
   }
  

@@ -1,53 +1,147 @@
 <app-header></app-header>
 
 
-
-  <div class="wrapper">
-    <div>here goes index buttoms</div>
-    <div>here goes index output</div>
-    <div>here goes delete index buttoms </div>
-    <div>here goes delete index output</div>
-    <div>
-        <div class="table-responsive">
-        <table class="table">
-            <ul class="list-group">
-                <li class="list-group-item active">AllIndex</li>
-                <li class="list-group-item"> {{allindex|json}}</li>
+<!-- SEE ALL INDEX. -->
+  <div class="row">
+ 
+    <div class="col-md-2">
+      <table class="table">
+        <ul class="list-group">
+            <li class="list-group-item active">AllIndex</li>
+            <li class="list-group-item">
               
-              </ul>
-            
-        </table>
-      </div></div>
-    <div>
-        <form >
-            <button type="submit" (click)="getIndex()">see index
+              <pre><p>{{allindex | json}}</p></pre>
 
-            </button><br>
-            <input
-              type="index"
-              [(ngModel)]="index"
-              name="index" 
-              placeholder="index"
-              required="index"
-            /><br>
-           
-            <input
-              type="id"
-              [(ngModel)]="id"
-              name="id"
-              placeholder="id"
-              required="id"
-            /><br>
+              </li>
             
-        </form>
-       
+          
+          </ul>
+        
+    </table>
     </div>
-    <div>{{indexresult|json}}</div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
- </div>
+  </div>
+
+
+
+
+<!-- SEE INDEX. -->
+
+
+  <div class="row">
+    <div class="col-md-2">
+      
+      <span class="d-block p-2 bg-primary text-white">
+        <li class="list-group-item active">see index</li>
+      </span>
+      <form >
+        <ul class="list-group">
+      
+        <input
+          type="index"
+          [(ngModel)]="index"
+          name="index" 
+          placeholder="index"
+          required="index"
+        /><br>
+      
+        <input
+          type="id"
+          [(ngModel)]="id"
+          name="id"
+          placeholder="id"
+          required="id"
+        /><br>
+        <button type="submit" (click)="getIndex()">see index
+
+        </button><br>
+      </ul>
+      </form>
+    </div>
+    <div class="row">
+      <div class="list-group-item" style="background-color: #eee;height: 200px;width:800px;overflow-y: scroll">
+      
+        <pre><p>{{indexresult | json}}</p></pre>
+    
+      
+      </div>
+     
+    </div>
+
+  </div>
+<!-- ADD INDEX. -->
+
+
+<div class="row">
+  <div class="col-md-2">
+    
+    <span class="d-block p-2 bg-primary text-white">
+      <li class="list-group-item active">ADD INDEX</li>
+    </span>
+    <form >
+      <ul class="list-group">
+    
+     
+      <div class="row">
+        <div class="list-group-item" style="background-color: #eee;">
+        
+              <input
+            type="indexname"
+            [(ngModel)]="indexInput"
+            name="indexname" 
+            placeholder="indexname"
+        
+          /><br>
+        
+          <input
+            type="idinput"
+            [(ngModel)]="idinput"
+            name="id input"
+            placeholder="id "
+            
+          /><br>
+          <input
+          type="docinput"
+          [(ngModel)]="docinput"
+          name="docinput"
+          placeholder="doc"
+        
+        /><br>
+      
+        
+        </div>
+       
+      </div>
+      
+      <button type="submit" (click)="postindex()">addIndex</button><br>
+    </ul>
+    
+    </form>
+    
+  </div>
+  <div class="row">
+    <div class="list-group-item" style="background-color: #eee;height: 200px;width:800px;overflow-y: scroll">
+    
+      <pre><p>{{indexresult1 | json}}</p></pre>
+  
+    
+    </div>
+   
+  </div>
+
+</div>
+  <div class="row"></div>
+  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>
+
+
 
 <app-footer></app-footer>
