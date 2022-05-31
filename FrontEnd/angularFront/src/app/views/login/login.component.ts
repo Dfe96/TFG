@@ -15,7 +15,7 @@ import { ResponseI } from 'src/app/models/response.interface';
 export class LoginComponent {
   username!: string;
   password!: string;
-  form: FormGroup;
+  
 
   constructor(
     public ApiService: ApiService,
@@ -23,10 +23,7 @@ export class LoginComponent {
     public fb: FormBuilder,
     private http: HttpClient
    ) {
-     this.form = this.fb.group({
-      username: '',
-      password: ''
-     })
+     
    }
    ngOnInit() {
     this.checkLocalStorage();

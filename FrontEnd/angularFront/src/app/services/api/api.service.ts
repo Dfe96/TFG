@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {LoginI} from '../../models/login.interface';
 import {ResponseI} from '../../models/response.interface';
-import {HttpClient, HttpHeaders} from '@angular/common/http'
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http'
 import{Observable} from 'rxjs';
 import { CookieService } from "ngx-cookie-service";
 @Injectable({
@@ -27,7 +27,14 @@ export class ApiService {
     return this.http.post('http://127.0.0.1:8000/login', formData)
     
   } */
-
+  getAllIndex(): Observable<any> {
+    return this.http.get("http://127.0.0.1:8001/allindex");
+  }
+  getIndex(index: any,id:any): Observable<any> {
+    
+    let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
+    return this.http.get("http://127.0.0.1:8001/index", {params: params});
+  }
   
   register(user: any): Observable<any> {
     return this.http.post("https://reqres.in/api/register", user);

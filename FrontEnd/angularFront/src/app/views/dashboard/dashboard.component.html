@@ -1,1 +1,53 @@
-<p>dashboard works!</p>
+<app-header></app-header>
+
+
+
+  <div class="wrapper">
+    <div>here goes index buttoms</div>
+    <div>here goes index output</div>
+    <div>here goes delete index buttoms </div>
+    <div>here goes delete index output</div>
+    <div>
+        <div class="table-responsive">
+        <table class="table">
+            <ul class="list-group">
+                <li class="list-group-item active">AllIndex</li>
+                <li class="list-group-item"> {{allindex|json}}</li>
+              
+              </ul>
+            
+        </table>
+      </div></div>
+    <div>
+        <form >
+            <button type="submit" (click)="getIndex()">see index
+
+            </button><br>
+            <input
+              type="index"
+              [(ngModel)]="index"
+              name="index" 
+              placeholder="index"
+              required="index"
+            /><br>
+           
+            <input
+              type="id"
+              [(ngModel)]="id"
+              name="id"
+              placeholder="id"
+              required="id"
+            /><br>
+            
+        </form>
+       
+    </div>
+    <div>{{indexresult|json}}</div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+ </div>
+
+<app-footer></app-footer>
