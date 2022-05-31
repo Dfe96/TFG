@@ -1,19 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import{ApiService} from '../../services/api/api.service';
+import { Injectable } from '@angular/core';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+@Injectable()
 export class DashboardComponent implements OnInit {
-
-  constructor(public ApiService: ApiService) {}
+  allindex!: JSON;
+  id!: string;
+  index!: JSON;
+  indexresult!:JSON;
+  constructor(
+    public ApiService: ApiService,
+ 
+    ) {}
   ngOnInit() {
-    this.getUserLogged();
+    this.ApiService.getAllIndex().subscribe(data => {
+      
+      console.log(data)
+      
+      this.allindex=data
+      console.log(this.allindex)
+  })
+    
   }
-  getUserLogged() {
-    this.ApiService.getUser().subscribe(user => {
-      console.log(user);
-    });
+  getallindex(){
+    this.ApiService.getAllIndex().subscribe(data => {
+      
+        console.log(data)
+    })
   }
+  getIndex(){
+    this.ApiService.getIndex(this.index,this.id).subscribe(data => {
+
+        console.log(data)
+        this.indexresult=data
+    })
+  }
+ 
 }

@@ -1,4 +1,4 @@
 export interface ResponseI {
-    status:string
-    response:string
+    access_token:string
+    token_type:string
 }
