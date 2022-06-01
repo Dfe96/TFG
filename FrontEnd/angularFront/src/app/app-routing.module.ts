@@ -8,13 +8,14 @@ import { NewComponent } from './views/new/new.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { EditComponent } from './views/edit/edit.component';
 import { FormsModule } from '@angular/forms';
+import { WatcherGuard } from './watcher.guard';
 
 const appRoutes: Routes = [
   {path:'',redirectTo:'login',pathMatch:'full'},
   {path:'login',component:LoginComponent,pathMatch: "full"},
-  {path:'dashboard',component:DashboardComponent, pathMatch: "full"},
-  {path:'new',component:NewComponent, pathMatch: "full"},
-  {path:'edit',component:EditComponent,pathMatch: "full"}
+  {path:'dashboard',component:DashboardComponent, pathMatch: "full",canActivate:[WatcherGuard]},
+  {path:'new',component:NewComponent, pathMatch: "full",canActivate:[WatcherGuard]},
+  {path:'edit',component:EditComponent,pathMatch: "full",canActivate:[WatcherGuard]}
 ];
 
 @NgModule({
