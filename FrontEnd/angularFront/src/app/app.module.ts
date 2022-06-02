@@ -12,7 +12,7 @@ import { EditComponent } from './views/edit/edit.component';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import  {HttpClientModule} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   declarations: [
@@ -27,6 +27,7 @@ import { CookieService } from 'ngx-cookie-service';
 
   ],
   imports: [
+    NgxDropzoneModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,

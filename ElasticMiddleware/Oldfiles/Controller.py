@@ -291,14 +291,11 @@ async def postindex(request: Request,index, id: Any = 1):
         print(e)
         return str(e)
 
-@app.post("/newIndexpdf",status_code=201)
-async def postindexpdf(index: str, id: Any = 1,file: bytes = File()):
-    print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+@app.post("/pdftoJson",status_code=201)
+async def postindexpdf(index:Any,id: Any = 1,file: bytes = File(), ):
 
-    print( "u know, for test")
     try:
-        request=toJson(file)
-
+        request= toJson(file)
 
         print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
@@ -306,9 +303,12 @@ async def postindexpdf(index: str, id: Any = 1,file: bytes = File()):
         #return {"received_request_body": "skipIs : "+str(index) +" limit "+ str(id)+"    "+ str(await request.body())}
         #j=await request.json()
         jsonresponse={str(index): request}#generamos un onjeto json que concatenamos con la request
-        print(jsonresponse)
-        #resp = es.index(index=index, id=id, document=jsonresponse)
-        return  jsonresponse
+
+        #print(jsonresponse)
+        resp = es.index(index=index, id=id, document=jsonresponse)
+        return JSONResponse (status_code=201,
+                                    content=jsonresponse
+                                    )
 
     except Exception as e:
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")

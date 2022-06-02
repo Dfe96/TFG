@@ -58,7 +58,11 @@ export class ApiService {
     return this.http.post("http://127.0.0.1:8001/newIndex",json, {params: params})
     
   }
-
+  postpdf(pdf: any,id: any,index: any) {
+    let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
+    return this.http.post("http://127.0.0.1:8001/pdftoJson",pdf,{params: params})
+    
+  }
   
 
 }

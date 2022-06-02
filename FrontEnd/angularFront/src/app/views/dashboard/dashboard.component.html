@@ -24,11 +24,11 @@
 
 
 
-<!-- SEE INDEX. -->
+
 
 
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-4">
       
       <span class="d-block p-2 bg-primary text-white">
         <li class="list-group-item active">see index</li>
@@ -72,7 +72,7 @@
 
 
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-4">
     
     <span class="d-block p-2 bg-primary text-white">
       <li class="list-group-item active">ADD INDEX</li>
@@ -86,7 +86,7 @@
         
               <input
             type="indexname"
-            [(ngModel)]="indexInput"
+            [(ngModel)]="indexNameInput1"
             name="indexname" 
             placeholder="indexname"
         
@@ -119,6 +119,7 @@
     
   </div>
   <div class="row">
+    
     <div class="list-group-item" style="background-color: #eee;height: 200px;width:800px;overflow-y: scroll">
     
       <pre><p>{{indexresult1 | json}}</p></pre>
@@ -129,8 +130,37 @@
   </div>
 
 </div>
-  <div class="row"></div>
-  <div class="col-md-6">.col-md-6</div>
+<!-- DRAG AND DROP. -->
+
+<div class="col-md-4">
+  <span class="d-block p-2 bg-primary text-white">
+    <li class="list-group-item active">DRAG AND DROP</li>
+  </span>
+
+</div>
+
+  <div class="col-md-6">
+    <input
+    type="indexname"
+    [(ngModel)]="indexNameInput1"
+    name="indexname" 
+    placeholder="indexname"
+
+  /><br>
+
+  <input
+    type="idinput"
+    [(ngModel)]="idinput1"
+    name="id input"
+    placeholder="id "
+    
+  /><br>
+  
+    <input class="form-control form-control-lg"   (change)="captureFile($event)" type="file">
+  </div>
+  <div class="col-md-6">
+     <button type="submit" (click)="uploadFile()">uploadFile</button><br>
+    </div>
   <div class="col-md-6">.col-md-6</div>
   <div class="col-md-6">.col-md-6</div>
   <div class="col-md-6">.col-md-6</div>  <div class="col-md-6">.col-md-6</div>
