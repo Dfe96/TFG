@@ -13,7 +13,7 @@ import uvicorn
 from elasticsearch import Elasticsearch
 import pandas as pd
 import json
-from fastapi import FastAPI, HTTPException, Depends, Request,status
+from fastapi import FastAPI, HTTPException, Depends, Request,status,File,UploadFile
 from typing import Any, List
 
 from fastapi.security import OAuth2PasswordRequestForm
@@ -33,6 +33,9 @@ from src.services.oauth import get_current_user
 
 #MONGO CLIENT CONFIG
 from starlette.responses import JSONResponse
+from src.services.pdftojson import toJson
+
+import tempfile
 
 try:
     app = FastAPI()
@@ -50,7 +53,7 @@ try:
     )
 
     #Mongo CLIENT CONFIG
-    uri = 'mongodb://root:1234@172.18.0.2/admin'# 27017 is the default port number for mongodb
+    uri = 'mongodb://root:1234@localhost/admin'# 27017 is the default port number for mongodb
     connect = MongoClient(uri)
     db=connect.myDb
     collection = db.demoCollection
@@ -270,7 +273,7 @@ def get_iris():
 #----------------------------------------------------------CRUD Elasticsearch --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/newIndex",status_code=201)
-async def root(request: Request,index, id: Any = 1):
+async def postindex(request: Request,index, id: Any = 1):
     try:
         print(await request.json())
         print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -288,6 +291,29 @@ async def root(request: Request,index, id: Any = 1):
         print(e)
         return str(e)
 
+@app.post("/newIndexpdf",status_code=201)
+async def postindexpdf(index: str, id: Any = 1,file: bytes = File()):
+    print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+
+    print( "u know, for test")
+    try:
+        request=toJson(file)
+
+
+        print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+
+        print( "u know, for test")
+        #return {"received_request_body": "skipIs : "+str(index) +" limit "+ str(id)+"    "+ str(await request.body())}
+        #j=await request.json()
+        jsonresponse={str(index): request}#generamos un onjeto json que concatenamos con la request
+        print(jsonresponse)
+        #resp = es.index(index=index, id=id, document=jsonresponse)
+        return  jsonresponse
+
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        raise e
 
 @app.get("/index")
 def getIndice(index: str, id: Any):
