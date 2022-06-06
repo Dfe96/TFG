@@ -156,7 +156,7 @@
     
   /><br>
   
-    <input class="form-control form-control-lg"   (change)="captureFile($event)" type="file">
+    <input (change)="captureFile($event)" type="file">
   </div>
   <div class="col-md-6">
      <button type="submit" (click)="uploadFile()">uploadFile</button><br>

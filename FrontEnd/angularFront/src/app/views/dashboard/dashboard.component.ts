@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   postindex(){
-    this.ApiService.postIndex(this.indexNameInput,this.idinput,this.docinput).subscribe(data => {
+    this.ApiService.postIndex(this.indexNameInput1,this.idinput,this.docinput).subscribe(data => {
 
         console.log(data)
         this.indexresult1=data
@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
     this.files.splice(this.files.indexOf(event), 1);
   }
   captureFile(event):any{
-    this.files.push(...event.addedFiles);
+    
     const filecaptured=event.target.files[0]
     this.file.push(filecaptured)
     console.log(event.target.files);

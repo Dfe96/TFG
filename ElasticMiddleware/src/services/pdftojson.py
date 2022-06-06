@@ -12,6 +12,7 @@ def toJson(document:any):
 
 
     text = ''
+
     with fitz.open(stream=document) as doc:
         for page in doc:
             text+= page.get_text()

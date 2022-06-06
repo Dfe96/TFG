@@ -26,6 +26,7 @@ from src.models.token import *
 from src.services.jwttoken import create_access_token
 from src.services.hashing import *
 from src.services.oauth import get_current_user
+import requests
 #import matplotlib.pyplot as plt
 #import requests
 #from PIL import Image
@@ -38,6 +39,7 @@ from src.services.pdftojson import toJson
 import tempfile
 
 try:
+    urlelastic='http://localhost:9200/'
     app = FastAPI()
     origins = [
         "http://localhost:9200",
@@ -273,7 +275,7 @@ def get_iris():
 #----------------------------------------------------------CRUD Elasticsearch --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/newIndex",status_code=201)
-async def postindex(request: Request,index, id: Any = 1):
+async def postindex(index: Any,request: Request, id: Any = 1):
     try:
         print(await request.json())
         print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -281,33 +283,39 @@ async def postindex(request: Request,index, id: Any = 1):
         print( "u know, for test")
         #return {"received_request_body": "skipIs : "+str(index) +" limit "+ str(id)+"    "+ str(await request.body())}
         j=await request.json()
-        jsonresponse={str(index): j}#generamos un onjeto json que concatenamos con la request
-        print(jsonresponse)
-        resp = es.index(index=index, id=id, document=jsonresponse)
-        return  jsonresponse
+        #jsonresponse={str(index): j}#generamos un onjeto json que concatenamos con la request
+        print("index is",index)
+        print("request is",j)
+        print("id is",id)
+        resp = es.index(index=str(index), id=str(id), document=j)
+        return  index
 
     except Exception as e:
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         print(e)
-        return str(e)
+        raise e
 
 @app.post("/pdftoJson",status_code=201)
 async def postindexpdf(index:Any,id: Any = 1,file: bytes = File(), ):
 
     try:
-        request= toJson(file)
-
+        request= str(toJson(file))
+        #j=await request.json()
+        print("index is",index)
+        print("id is",id)
+        print("request is",request)
+        jsonresponse={"text": request}
         print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
         print( "u know, for test")
         #return {"received_request_body": "skipIs : "+str(index) +" limit "+ str(id)+"    "+ str(await request.body())}
         #j=await request.json()
-        jsonresponse={str(index): request}#generamos un onjeto json que concatenamos con la request
+        ## jsonresponse={str(index): request}#generamos un onjeto json que concatenamos con la request
 
         #print(jsonresponse)
         resp = es.index(index=index, id=id, document=jsonresponse)
         return JSONResponse (status_code=201,
-                                    content=jsonresponse
+                                    content=request
                                     )
 
     except Exception as e:
@@ -335,11 +343,20 @@ def getIndice():
     print(allindexlist)
 
     return str(allindexlist)
+@app.get("/mapping")
+def getMapp(index: str):
+    path=urlelastic+index+'/_search'
 
+    r =requests.get(path)
+    return(json.loads(r.text))
+@app.delete("/deleteindex")
+def deleteAllIndex(index: str):
+    path=urlelastic+index
+    r =requests.delete(path)
+    return(json.loads(r.text))
 
-
-@app.delete("/index")
-def getIndice(index: str, id: Any):
+@app.delete("/indexbyid")
+def deleteIndexById(index: str, id: Any):
     resp = es.delete(index=index, id=id)
     return resp
 
