@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import{ApiService} from '../../services/api/api.service';
 import { Injectable } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatSidenav } from '@angular/material/sidenav';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,11 +22,13 @@ export class DashboardComponent implements OnInit {
   public idinput1: string="";
   docinput!: JSON;
   docconverted!:any;
+  componentToShow: String="";
+  myUsername="";
  
   public file:any =[]
   constructor(
     public ApiService: ApiService,
- 
+    private observer: BreakpointObserver,
     ) {}
   ngOnInit() {
     this.ApiService.getAllIndex().subscribe(data => {
@@ -33,9 +37,15 @@ export class DashboardComponent implements OnInit {
       
       this.allindex=data
       console.log(this.allindex)
-  })
-    
+      this.myUsername=this.ApiService.getMyuser();
+
+});
+  
   }
+  
+
+
+
   getallindex(){
     this.ApiService.getAllIndex().subscribe(data => {
       
@@ -58,6 +68,11 @@ export class DashboardComponent implements OnInit {
     })
   }
   files: File[] = [];
+
+  changeComponent(componentToShow) {
+    console.log("mostro cambia a "+componentToShow)
+    this.componentToShow = componentToShow;
+  }
 
   onSelect(event) {
     console.log(event);

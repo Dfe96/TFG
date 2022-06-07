@@ -19,10 +19,10 @@ def toJson(document:any):
     # print(text)
 
 
-    json_object = json.dumps(text)
+    #json_object = json.dumps(text)
 
-    print(json_object)
-    return json_object
+    #print(json_object)
+    return text
 
 
 

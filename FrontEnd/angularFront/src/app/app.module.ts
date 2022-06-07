@@ -13,6 +13,15 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import  {HttpClientModule} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatButtonModule } from '@angular/material/button'
+import { MatIconModule } from '@angular/material/icon'
+import {MatDividerModule  } from '@angular/material/divider'
+
+
+
 
 @NgModule({
   declarations: [
@@ -32,7 +41,16 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+
     
   ],
   providers: [CookieService],
