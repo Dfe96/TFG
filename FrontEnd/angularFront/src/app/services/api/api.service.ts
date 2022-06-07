@@ -41,9 +41,17 @@ export class ApiService {
   }
   setToken(token: string) {
     this.cookies.set("token", token);
+    
   }
   getToken() {
     return this.cookies.get("token");
+  }
+  setMyUser(token: string) {
+    this.cookies.set("username", token);
+    
+  }
+  getMyuser() {
+    return this.cookies.get("username");
   }
   getUser(user: any): Observable<any> {
     return this.http.get("http://127.0.0.1:8001/user",{

@@ -30,6 +30,7 @@ export class LoginComponent {
   }
   checkLocalStorage(){
     if(localStorage.getItem('token')){
+      
       this.router.navigateByUrl('/dashboard');
     }
   }
@@ -45,7 +46,7 @@ export class LoginComponent {
       let dataresponse:ResponseI=data
         console.log(dataresponse.access_token)
         this.ApiService.setToken(dataresponse.access_token);
-        localStorage.setItem("token",dataresponse.access_token)
+        this.ApiService.setMyUser(this.username);
         this.router.navigateByUrl('/dashboard');
     },
     error => {
