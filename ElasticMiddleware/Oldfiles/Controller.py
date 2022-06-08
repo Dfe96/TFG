@@ -274,14 +274,15 @@ async def postindex(index: Any, request: Request, id: Any = 1):
 
 
 @app.post("/pdftoJson", status_code=201)
-async def postindexpdf(index: Any, id: str = 1, file: bytes = File(), ):
+async def postindexpdf(index: Any,author: str = 1, id: str = 1, file: bytes = File(), ):
     try:
         request = toJson(file)#llamamos a toJson que usa la libreria FLITZ para extraer la información del pdf
         # j=await request.json()
 
         my_new_string = re.sub('[^a-zA-Z0-9 \n\.]', '', request)#llamamos a re.(regresion library) con objeto de eliminar caracteres especiales.EX:Recuperaci\´on\\nde Informaci\´on -->Recuperacion\nde Informacion
         jsonresponse = {"text": my_new_string,
-                        "date":time.time()}
+                        "date":time.time(),
+                        "author":author}
         print("index is", index)
         print("id is", id)
         print("jsonresponse is", jsonresponse)
@@ -324,16 +325,26 @@ def getIndice():
         allindexlist.append(value)
     print(allindexlist)
 
-    return str(allindexlist)
+    return allindexlist
 
 
 @app.get("/mapping")
 def getMapp(index: str):
-    path = urlelastic + index + '/_search'
+    path = urlelastic + index + '/_mapping'
 
     r = requests.get(path)
     return (json.loads(r.text))
+@app.get("/search")
+def getMapp(index: str):
+    path = urlelastic + index + '/_search'
 
+    r = requests.get(path)
+    response=json.loads(r.text)
+
+    for x in response['hits']['hits'] :
+        print(x['_id'])
+    print(response)
+    return (json.loads(r.text))
 
 @app.delete("/deleteindex")
 def deleteAllIndex(index: str):
