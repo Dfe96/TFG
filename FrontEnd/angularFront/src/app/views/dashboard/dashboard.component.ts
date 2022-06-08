@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgIterable, OnInit, ViewChild } from '@angular/core';
 import{ApiService} from '../../services/api/api.service';
 import { Injectable } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Xtb } from '@angular/compiler';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -10,7 +13,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 @Injectable()
 export class DashboardComponent implements OnInit {
-  allindex!: JSON;
+  foundindexes!:Array<Object>;
+  allindex!: NgIterable<any>;
   public id: string="";
   index!: JSON;
   indexresult!:JSON;
@@ -24,6 +28,8 @@ export class DashboardComponent implements OnInit {
   docconverted!:any;
   componentToShow: String="";
   myUsername="";
+  indexSelected="23";
+ 
  
   public file:any =[]
   constructor(
@@ -31,26 +37,29 @@ export class DashboardComponent implements OnInit {
     private observer: BreakpointObserver,
     ) {}
   ngOnInit() {
-    this.ApiService.getAllIndex().subscribe(data => {
-      
-      console.log(data)
-      
-      this.allindex=data
-      console.log(this.allindex)
-      this.myUsername=this.ApiService.getMyuser();
-
-});
-  
+    //console.log("indexselected cambia a "+this.indexSelected)
+    this.getallindex();
+    this.myUsername=this.ApiService.getMyuser();
+    
   }
   
 
 
-
+  
   getallindex(){
     this.ApiService.getAllIndex().subscribe(data => {
       
-        console.log(data)
-    })
+      //console.log(data)
+      this.foundindexes = [];
+      this.allindex=data;
+      data.forEach((x)=>{this.foundindexes.push(x)});
+      //this.foundindexes=Array.of(this.allindex)
+      //console.log(this.allindex)
+      //console.log(this.foundindexes)
+     
+
+
+    });
   }
   getIndex(){
     this.ApiService.getIndex(this.index,this.id).subscribe(data => {
@@ -68,12 +77,16 @@ export class DashboardComponent implements OnInit {
     })
   }
   files: File[] = [];
-
+  changeindexselected(indexSelected){
+    console.log("indexselected is: "+indexSelected)
+    this.indexSelected=indexSelected
+  }
   changeComponent(componentToShow) {
-    console.log("mostro cambia a "+componentToShow)
+    console.log("componentToShow is "+componentToShow)
+   
     this.componentToShow = componentToShow;
   }
-
+  
   onSelect(event) {
     console.log(event);
     this.files.push(...event.addedFiles);

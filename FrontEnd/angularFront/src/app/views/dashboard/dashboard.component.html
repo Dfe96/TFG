@@ -1,6 +1,6 @@
 
 <!--<app-header></app-header> -->
-<body>
+
   <!-- Vertical navbar -->
   <div class="vertical-nav bg-white" id="sidebar">
     <div class="py-4 px-3 mb-4 bg-light">
@@ -16,7 +16,7 @@
   
     <ul class="nav flex-column bg-white mb-0">
       <li class="nav-item">
-        <a (click)="changeComponent('allIndex')" class="nav-link text-dark font-italic bg-light">
+        <a clicked = true  (click)="changeComponent('allIndex')" class="nav-link text-dark font-italic bg-light">
                   <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
                   All Indexes
         </a>
@@ -48,22 +48,26 @@
   
    <!----------------------------------------------------------------------------------------------------------------->
 <!-- SEE ALL INDEX. -->
+<body>
+  <div class="page-content p-5" id="content"></div>
+  <div  class="page-content p-5" *ngIf="componentToShow=='allIndex'" style="display: flex"  >
+   <div>
+      <li *ngFor="let item of allindex">
+          <button  class="button-63" (click)="changeindexselected(item)"(click)="changeComponent(item)" >
+           
+            {{item}}</button>
 
 
-
-
-
-  <div *ngIf="componentToShow=='allIndex'" style="display: flex"  >
-    
-
-
-    <div class="page-content p-5" id="content">  
+      </li>
+    </div>
+    <!-- 
+    <div id="content">  
       <table class="table">
         <ul class="list-group">
             <li class="list-group-item active">AllIndex</li>
             <li class="list-group-item">
               
-              <pre><p>{{allindex | json}}</p></pre>
+              <pre><p>{{allindex}}</p></pre>
   
               </li>
             
@@ -73,7 +77,7 @@
       </table>
     </div>
   
-  
+    -->
     
   </div>
 
@@ -81,11 +85,11 @@
 
 
 
+<!-- SEE  SPECIFIC INDEX. -->
 
-
-  <div *ngIf="componentToShow=='seeIndex'" class="row">
+  <div *ngIf="componentToShow=='seeIndex' " class="row">
     <div class="page-content p-5" id="content">  
-      
+     
       <span class="d-block p-2 bg-primary text-white">
         <li class="list-group-item active">see index</li>
       </span>
@@ -124,6 +128,56 @@
     </div>
 
   </div>
+  
+ <!----------------------------------------------------------------------------------------------------------------->
+<!-- SELECTED INDEX. -->
+
+<div  class="page-content p-5" *ngIf="componentToShow==indexSelected" style="display: flex"  >
+ {{indexSelected}}
+ 
+  <div class="separator"></div>
+
+   <!-- DRAG AND DROP OF SELECTED INDEX -->
+   <div class="col-lg-7">
+    <div class="col-lg-7" id="content">  
+      <span class="d-block p-2 bg-primary text-white">
+        <li class="list-group-item active">DRAG AND DROP</li>
+      </span>
+
+    </div>
+
+    <div class="col-lg-7" id="content">  
+        <input
+        type="indexname"
+        [(ngModel)]="indexNameInput1"
+        name="indexname" 
+        placeholder="indexname"
+
+      /><br>
+      <input
+        type="idinput"
+        [(ngModel)]="idinput1"
+        name="id input"
+        placeholder="id "
+        
+      /><br>
+      
+        <input (change)="captureFile($event)" type="file">
+      </div>
+      <div class="col-md-6 footer-space">
+        <button type="submit" (click)="uploadFile()">uploadFile</button><br>
+        </div>
+
+      
+  </div>
+
+</div>
+
+
+
+
+
+
 
   <!----------------------------------------------------------------------------------------------------------------->
 <!-- ADD INDEX. -->
