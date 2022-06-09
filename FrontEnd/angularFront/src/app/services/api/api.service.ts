@@ -8,7 +8,7 @@ import { CookieService } from "ngx-cookie-service";
   providedIn: 'root'
 })
 export class ApiService {
-  url:string="http://localhost:27017"
+  url:string="http://127.0.0.1:8001"
   errorMessage;
   form: any;
 
@@ -28,12 +28,14 @@ export class ApiService {
     
   } */
   getAllIndex(): Observable<any> {
-    return this.http.get("http://127.0.0.1:8001/allindex");
+    let urlAllindex=this.url+"/allindex"
+    
+    return this.http.get(urlAllindex);
   }
   getIndex(index: any,id:any): Observable<any> {
-    
+    let urlgetIndex=this.url+"/index"
     let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
-    return this.http.get("http://127.0.0.1:8001/index", {params: params});
+    return this.http.get(urlgetIndex, {params: params});
   }
   
   register(user: any): Observable<any> {
@@ -54,7 +56,8 @@ export class ApiService {
     return this.cookies.get("username");
   }
   getUser(user: any): Observable<any> {
-    return this.http.get("http://127.0.0.1:8001/user",{
+    let urlgetuser=this.url+"/user"
+    return this.http.get(urlgetuser,{
       params: { username:user }});
   }
   getUserLogged() {
@@ -62,15 +65,22 @@ export class ApiService {
     // Aquí iría el endpoint para devolver el usuario para un token
   }
   postIndex(index: any,id: any,json: any) {
+    let urlnewIndex=this.url+"/newIndex"
     let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
-    return this.http.post("http://127.0.0.1:8001/newIndex",json, {params: params})
+    return this.http.post(urlnewIndex,json, {params: params})
     
   }
   postpdf(pdf: any,id: any,index: any) {
+    let urlpdftoJson=this.url+"/pdftoJson"
     let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
-    return this.http.post("http://127.0.0.1:8001/pdftoJson",pdf,{params: params})
+    return this.http.post(urlpdftoJson,pdf,{params: params})
     
   }
-  
+  deleteentireIndex(index: any) {
+    let urlDelete=this.url+"/deleteindex"
+    let params = new HttpParams().set("index",index); //Create new HttpParams
+    return this.http.delete(urlDelete,{params: params})
+    
+  }
 
 }

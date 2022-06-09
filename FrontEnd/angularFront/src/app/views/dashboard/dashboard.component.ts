@@ -28,9 +28,10 @@ export class DashboardComponent implements OnInit {
   docconverted!:any;
   componentToShow: String="";
   myUsername="";
+  searchvar="";
   indexSelected="23";
- 
- 
+  indexNameInputTodelete="";
+  deleteResponse!:any;
   public file:any =[]
   constructor(
     public ApiService: ApiService,
@@ -103,7 +104,7 @@ export class DashboardComponent implements OnInit {
     console.log(event.target.files);
 
   }
-  uploadFile(){
+  uploadFile(){//subir pdf 
     try{
       var formData: any = new FormData();
       
@@ -127,6 +128,21 @@ export class DashboardComponent implements OnInit {
       console.log('ERROR',e)
     }
 
+  }
+  deleteentireIndex(){
+    console.log("DELETED")
+    
+    this.ApiService.deleteentireIndex(this.indexNameInputTodelete,).subscribe(data => {
+
+        console.log(data)
+        this.deleteResponse=data
+        
+    })
+  }
+  clickMethod() {
+    if(confirm("Are you sure to delete "+this.indexNameInputTodelete)) {this.deleteentireIndex()
+      
+    }
   }
  
 }

@@ -16,26 +16,51 @@
   
     <ul class="nav flex-column bg-white mb-0">
       <li class="nav-item">
-        <a clicked = true  (click)="changeComponent('allIndex')" class="nav-link text-dark font-italic bg-light">
+        <button clicked = true  (click)="changeComponent('allIndex')" class="dropdown-item">
                   <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
                   All Indexes
-        </a>
+        </button>
+      </li>
+      
+      <li class="nav-item " >
+        <button (click)="changeComponent('seeIndex')" class="dropdown-item">
+          <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+                    See Indexes
+        </button> 
       </li>
       <li class="nav-item">
-        <a (click)="changeComponent('seeIndex')" class="nav-link text-dark font-italic">
-                  <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
-                  See Indexes
-        </a>
-      </li>
-      <li class="nav-item">
-        <a (click)="changeComponent('addIndex')" class="nav-link text-dark font-italic">
+        <button (click)="changeComponent('addIndex')" class="dropdown-item">
                   <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
                   addIndex
-              </a>
+              </button>
       </li>
+      
+      <div class="dropdown">
+        <button class="dropdown-item">DeleteIndex</button>
+        <div class="dropdown-content">
+          <button (click)="changeComponent('deleteAnEntireIndex')" class="dropdown-item">
+            <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
+            Delete an entire Index
+        </button>
+          <a >Delete Doc into an index</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-item">Advanced Options</button>
+        <div class="dropdown-content">
+          <a >see mapping of Index</a>
+          <a >Search advanced</a>
+          <a >update</a>
+
+        </div>
+      </div>
+      
+      
      
     </ul>
+    
   </div>
+  
   <!-- End vertical navbar -->
   
   
@@ -87,7 +112,7 @@
 
 <!-- SEE  SPECIFIC INDEX. -->
 
-  <div *ngIf="componentToShow=='seeIndex' " class="row">
+  <div *ngIf="componentToShow=='seeIndex' " class="row col-xs-12 col-md-8" >
     <div class="page-content p-5" id="content">  
      
       <span class="d-block p-2 bg-primary text-white">
@@ -118,7 +143,7 @@
       </form>
     </div>
     <div class="row">
-      <div class="page-content p-5" style="background-color: #eee;height: 200px;width:800px;overflow-y: scroll">
+      <div class="page-content p-5" >
       
         <pre><p>{{indexresult | json}}</p></pre>
     
@@ -133,13 +158,58 @@
 <!-- SELECTED INDEX. -->
 
 <div  class="page-content p-5" *ngIf="componentToShow==indexSelected" style="display: flex"  >
- {{indexSelected}}
- 
+  <div class="div" id="content">
+    <h1 class="display-4 text-black">Index Selected: <h1 class="display-4 text-white">{{indexSelected}}</h1></h1>
+    <div>
+      <input
+        type="search"
+        [(ngModel)]="searchvar"
+        name="search" 
+        placeholder="search"
+
+      />
+    </div>
+
+  </div>
+  
+  <!-- table Section -->
+  <div class="col-lg-5" style="position: absolute; left: 0; top: 0%; margin:300px;">
+    <table class="table col">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   <div class="separator"></div>
 
    <!-- DRAG AND DROP OF SELECTED INDEX -->
-   <div class="col-lg-7">
-    <div class="col-lg-7" id="content">  
+   <div  style="position: absolute; left: 0; top: 60%; margin:300px;">
+    <div  id="content">  
       <span class="d-block p-2 bg-primary text-white">
         <li class="list-group-item active">DRAG AND DROP</li>
       </span>
@@ -183,7 +253,7 @@
 <!-- ADD INDEX. -->
 
 
-  <div class="row" *ngIf="componentToShow=='addIndex'">
+  <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='addIndex'">
     <div class="page-content p-5" id="content">  
       
       <span class="d-block p-2 bg-primary text-white">
@@ -244,7 +314,7 @@
   </div>
     <!----------------------------------------------------------------------------------------------------------------->
   <!-- DRAG AND DROP. -->
-  <div class="row" *ngIf="componentToShow=='addIndex'">
+  <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='addIndex'">
     <div class="page-content p-5" id="content">  
       <span class="d-block p-2 bg-primary text-white">
         <li class="list-group-item active">DRAG AND DROP</li>
@@ -275,6 +345,58 @@
         </div>
 
       
+  </div>
+
+  <!-- DELETE FULL INDEX -->
+
+
+  <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='deleteAnEntireIndex'">
+    <div class="page-content p-5" id="content">  
+      <h1 class="display-4 text-white">To delete an entire index you must specify the name of the index to be deleted</h1>
+      <span class="d-block p-2 bg-primary text-white">
+        
+        <li class="list-group-item active">DeleteAnEntireIndex</li>
+      </span>
+      <form >
+        <ul class="list-group">
+      
+      
+        <div class="row ">
+          <div class="list-group-item" style="background-color: #eee;">
+          
+                <input
+              type="indexname"
+              [(ngModel)]="indexNameInputTodelete"
+              name="indexname" 
+              placeholder="indexname"
+          
+            /><br>
+          
+            
+           
+        
+          
+          </div>
+        
+        </div>
+        <button type="submit"   (click)="clickMethod()">Delete </button>
+      </ul>
+      
+      
+      </form>
+      
+    </div>
+    <div class="row">
+      
+      <div class="page-content p-5" style="margin:300px;background-color: #eee; height: 800px;overflow-y: scroll;" >
+      
+        <pre><p >{{deleteResponse | json}}</p></pre>
+    
+      
+      </div>
+    
+    </div>
+
   </div>
 </body>
 <app-footer></app-footer>

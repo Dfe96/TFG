@@ -336,21 +336,40 @@ def getMapp(index: str):
     return (json.loads(r.text))
 @app.get("/search")
 def getMapp(index: str):
-    path = urlelastic + index + '/_search'
+    try:
+        path = urlelastic + index + '/_search'
 
-    r = requests.get(path)
-    response=json.loads(r.text)
+        r = requests.get(path)
 
-    for x in response['hits']['hits'] :
-        print(x['_id'])
-    print(response)
-    return (json.loads(r.text))
+        response=json.loads(r.text)
+        responsecode=r.status_code
 
-@app.delete("/deleteindex")
+        if(responsecode!=200):
+            return (json.loads(r.text))
+        #
+        # for x in response['hits']['hits'] :
+        #     print(x['_id'])
+        # print(response)
+        return (json.loads(r.text))
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        raise e
+
+@app.delete("/deleteindex",status_code=200)
 def deleteAllIndex(index: str):
-    path = urlelastic + index
-    r = requests.delete(path)
-    return (json.loads(r.text))
+    try:
+        path = urlelastic + index
+        r = requests.delete(path)
+
+        txtresponse=(json.loads(r.text))
+        return JSONResponse(status_code=200,
+                            content=txtresponse
+                            )
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        raise e
 
 
 @app.delete("/indexbyid")
