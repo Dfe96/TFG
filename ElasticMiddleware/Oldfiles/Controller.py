@@ -37,7 +37,7 @@ import time
 # MONGO CLIENT CONFIG
 from starlette.responses import JSONResponse
 from src.services.pdftojson import toJson
-
+from datetime import datetime
 import tempfile
 
 try:
@@ -274,15 +274,16 @@ async def postindex(index: Any, request: Request, id: Any = 1):
 
 
 @app.post("/pdftoJson", status_code=201)
-async def postindexpdf(index: Any,author: str = 1, id: str = 1, file: bytes = File(), ):
+async def postindexpdf(index: Any,author: str = "ElBarto", id: str =" 1", file: bytes = File(), ):
     try:
         request = toJson(file)#llamamos a toJson que usa la libreria FLITZ para extraer la información del pdf
         # j=await request.json()
-
+        timestamp=time.time()
+        dt_object = datetime.fromtimestamp(timestamp)
         my_new_string = re.sub('[^a-zA-Z0-9 \n\.]', '', request)#llamamos a re.(regresion library) con objeto de eliminar caracteres especiales.EX:Recuperaci\´on\\nde Informaci\´on -->Recuperacion\nde Informacion
         jsonresponse = {"text": my_new_string,
-                        "date":time.time(),
-                        "author":author}
+                        "date":dt_object,
+                        "text": my_new_string}
         print("index is", index)
         print("id is", id)
         print("jsonresponse is", jsonresponse)

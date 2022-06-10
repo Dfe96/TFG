@@ -1,402 +1,299 @@
-
 <!--<app-header></app-header> -->
-
-  <!-- Vertical navbar -->
-  <div class="vertical-nav bg-white" id="sidebar">
-    <div class="py-4 px-3 mb-4 bg-light">
-      <div class="media d-flex align-items-center"><img src="assets/logooeg.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-        <div class="media-body">
-          <h4 class="m-0">user</h4>
-          <p class="font-weight-light text-muted mb-0">{{myUsername}}</p>
-        </div>
+<head>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<!-- Vertical navbar -->
+<div class="vertical-nav bg-white" id="sidebar">
+   <div class="py-4 px-3 mb-4 bg-light">
+      <div class="media d-flex align-items-center">
+         <img src="assets/logooeg.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+         <div class="media-body">
+            <h4 class="m-0">user</h4>
+            <p class="font-weight-light text-muted mb-0">{{myUsername}}</p>
+         </div>
       </div>
-    </div>
-  
-    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
-  
-    <ul class="nav flex-column bg-white mb-0">
+   </div>
+   <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+   <ul class="nav flex-column bg-white mb-0">
       <li class="nav-item">
-        <button clicked = true  (click)="changeComponent('allIndex')" class="dropdown-item">
-                  <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
-                  All Indexes
-        </button>
+         <button clicked = true  (click)="changeComponent('allIndex')" class="dropdown-item">
+         <i class="fa fa-th-large mr-3 text-primary fa-fw"></i><i class="fal fa-boxes"></i>
+         All Indexes
+         </button>
       </li>
-      
-      <li class="nav-item " >
-        <button (click)="changeComponent('seeIndex')" class="dropdown-item">
-          <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
-                    See Indexes
-        </button> 
+      <li class="nav-item " ><i class="fa-brands fa-searchengin"></i>
+         <button (click)="changeComponent('seeIndex')" class="dropdown-item">
+         <i class="fa fa-search-plus mr-3 text-primary fa-fw"></i>
+         See Index
+         </button> 
       </li>
       <li class="nav-item">
-        <button (click)="changeComponent('addIndex')" class="dropdown-item">
-                  <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
-                  addIndex
-              </button>
+         <button (click)="changeComponent('addIndex')" class="dropdown-item">
+         <i class="fa fa-plus-circle mr-3 text-primary fa-fw"></i>
+         Create Index
+         </button>
       </li>
-      
-      <div class="dropdown">
-        <button class="dropdown-item">DeleteIndex</button>
-        <div class="dropdown-content">
-          <button (click)="changeComponent('deleteAnEntireIndex')" class="dropdown-item">
-            <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
-            Delete an entire Index
-        </button>
-          <a >Delete Doc into an index</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button class="dropdown-item">Advanced Options</button>
-        <div class="dropdown-content">
-          <a >see mapping of Index</a>
-          <a >Search advanced</a>
-          <a >update</a>
-
-        </div>
-      </div>
-      
-      
-     
-    </ul>
-    
-  </div>
-  
-  <!-- End vertical navbar -->
-  
-  
-  <!-- Page content holder -->
-  
-
- 
-  
-  
-  
-   <!----------------------------------------------------------------------------------------------------------------->
-<!-- SEE ALL INDEX. -->
-<body>
-  <div class="page-content p-5" id="content"></div>
-  <div  class="page-content p-5" *ngIf="componentToShow=='allIndex'" style="display: flex"  >
-   <div>
-      <li *ngFor="let item of allindex">
-          <button  class="button-63" (click)="changeindexselected(item)"(click)="changeComponent(item)" >
-           
-            {{item}}</button>
-
-
+      <li class="nav-item">
+         <button (click)="changeComponent('deleteAnEntireIndex')" class="dropdown-item">
+         <i class="fa fa-trash mr-3 text-primary fa-fw"></i>
+         Delete Index
+         </button>
       </li>
-    </div>
-    <!-- 
-    <div id="content">  
-      <table class="table">
-        <ul class="list-group">
-            <li class="list-group-item active">AllIndex</li>
-            <li class="list-group-item">
-              
-              <pre><p>{{allindex}}</p></pre>
-  
-              </li>
-            
-          
-          </ul>
-        
-      </table>
-    </div>
-  
-    -->
-    
-  </div>
-
-
-
-
-
-<!-- SEE  SPECIFIC INDEX. -->
-
-  <div *ngIf="componentToShow=='seeIndex' " class="row col-xs-12 col-md-8" >
-    <div class="page-content p-5" id="content">  
-     
-      <span class="d-block p-2 bg-primary text-white">
-        <li class="list-group-item active">see index</li>
-      </span>
-      <form >
-        <ul class="list-group">
-      
-        <input
-          type="index"
-          [(ngModel)]="index"
-          name="index" 
-          placeholder="index"
-          required="index"
-        /><br>
-      
-        <input
-          type="id"
-          [(ngModel)]="id"
-          name="id"
-          placeholder="id"
-          required="id"
-        /><br>
-        <button type="submit" (click)="getIndex()">see index
-
-        </button><br>
-      </ul>
-      </form>
-    </div>
-    <div class="row">
-      <div class="page-content p-5" >
-      
-        <pre><p>{{indexresult | json}}</p></pre>
-    
-      
+      <div class="dropdown">
+         <a class=" fa fa-user-secret dropdown-item">Advanced Options</a>
+         <div class="dropdown-content"style="background-color: rgb(62, 144, 144);">
+            <a class="fa fa-user-secret">see mapping of Index</a>
+            <a class="fa fa-user-secret">Search advanced</a>
+            <a class="fa fa-user-secret">update</a>
+         </div>
       </div>
-     
-    </div>
-
-  </div>
-  
- <!----------------------------------------------------------------------------------------------------------------->
-<!-- SELECTED INDEX. -->
-
-<div  class="page-content p-5" *ngIf="componentToShow==indexSelected" style="display: flex"  >
-  <div class="div" id="content">
-    <h1 class="display-4 text-black">Index Selected: <h1 class="display-4 text-white">{{indexSelected}}</h1></h1>
-    <div>
-      <input
-        type="search"
-        [(ngModel)]="searchvar"
-        name="search" 
-        placeholder="search"
-
-      />
-    </div>
-
-  </div>
-  
-  <!-- table Section -->
-  <div class="col-lg-5" style="position: absolute; left: 0; top: 0%; margin:300px;">
-    <table class="table col">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  <div class="separator"></div>
-
-   <!-- DRAG AND DROP OF SELECTED INDEX -->
-   <div  style="position: absolute; left: 0; top: 60%; margin:300px;">
-    <div  id="content">  
-      <span class="d-block p-2 bg-primary text-white">
-        <li class="list-group-item active">DRAG AND DROP</li>
-      </span>
-
-    </div>
-
-    <div class="col-lg-7" id="content">  
-        <input
-        type="indexname"
-        [(ngModel)]="indexNameInput1"
-        name="indexname" 
-        placeholder="indexname"
-
-      /><br>
-      <input
-        type="idinput"
-        [(ngModel)]="idinput1"
-        name="id input"
-        placeholder="id "
-        
-      /><br>
-      
-        <input (change)="captureFile($event)" type="file">
-      </div>
-      <div class="col-md-6 footer-space">
-        <button type="submit" (click)="uploadFile()">uploadFile</button><br>
-        </div>
-
-      
-  </div>
-
+   </ul>
 </div>
-
-
-
-
-
-
-
-  <!----------------------------------------------------------------------------------------------------------------->
-<!-- ADD INDEX. -->
-
-
-  <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='addIndex'">
-    <div class="page-content p-5" id="content">  
-      
-      <span class="d-block p-2 bg-primary text-white">
-        <li class="list-group-item active">ADD INDEX</li>
-      </span>
-      <form >
-        <ul class="list-group">
-      
-      
-        <div class="row">
-          <div class="list-group-item" style="background-color: #eee;">
-          
-                <input
-              type="indexname"
-              [(ngModel)]="indexNameInput1"
-              name="indexname" 
-              placeholder="indexname"
-          
-            /><br>
-          
-            <input
-              type="idinput"
-              [(ngModel)]="idinput"
-              name="id input"
-              placeholder="id "
-              
-            /><br>
-            <input
-            type="docinput"
-            [(ngModel)]="docinput"
-            name="docinput"
-            placeholder="doc"
-          
-          /><br>
-        
-          
-          </div>
-        
-        </div>
-        
-        <button type="submit" (click)="postindex()">addIndex</button><br>
-      </ul>
-      
-      </form>
-      
-    </div>
-    <div class="row">
-      
-      <div class="page-content p-5" style="background-color: #eee;height: 200px;width:800px;overflow-y: scroll">
-      
-        <pre><p>{{indexresult1 | json}}</p></pre>
-    
-      
+<!-- End vertical navbar -->
+<!-- Page content holder -->
+<!----------------------------------------------------------------------------------------------------------------->
+<body>
+   <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='allIndex'">
+      <div class="page-content p-5" id="content">
+         <h1 class="display-4 text-white">select Index:</h1>
+         <!-- BUTTOM+ -->
+         <p>
+            <a  class="btn btn-info btn-lg"(click)="changeComponent('addIndex')" type="button">
+            <span class=" fa fa-plus glyphicon glyphicon-plus"><i class="fa fa-file-text" aria-hidden="true"></i></span>  
+            </a>
+         </p>
+         <div class="separator"></div>
+         <!-- loop  -->     
+         <div>
+            <li *ngFor="let item of allindex">
+               <button  class="button-63" (click)="changeindexselected(item)"(click)="changeComponent(item)" >
+               {{item}}</button>
+            </li>
+         </div>
       </div>
-    
-    </div>
-
-  </div>
-    <!----------------------------------------------------------------------------------------------------------------->
-  <!-- DRAG AND DROP. -->
-  <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='addIndex'">
-    <div class="page-content p-5" id="content">  
-      <span class="d-block p-2 bg-primary text-white">
-        <li class="list-group-item active">DRAG AND DROP</li>
-      </span>
-
-    </div>
-
-    <div class="page-content p-5" id="content">  
-        <input
-        type="indexname"
-        [(ngModel)]="indexNameInput1"
-        name="indexname" 
-        placeholder="indexname"
-
-      /><br>
-      <input
-        type="idinput"
-        [(ngModel)]="idinput1"
-        name="id input"
-        placeholder="id "
-        
-      /><br>
-      
-        <input (change)="captureFile($event)" type="file">
+   </div>
+   <!-- SEE  SPECIFIC INDEX. -->
+   <div *ngIf="componentToShow=='seeIndex' " class="row col-xs-12 col-md-8" >
+      <div class="page-content p-5" id="content">
+         <span class="d-block p-2 bg-primary text-white">
+            <li class="list-group-item active">see index</li>
+         </span>
+         <form >
+            <ul class="list-group">
+               <input
+               type="index"
+               [(ngModel)]="index"
+               name="index" 
+               placeholder="index"
+               required="index"
+               /><br>
+               <input
+               type="id"
+               [(ngModel)]="id"
+               name="id"
+               placeholder="id"
+               required="id"
+               /><br>
+               <button type="submit" (click)="getIndex()">see index
+               </button><br>
+            </ul>
+         </form>
+      </div>
+      <div class="row">
+         <div class="page-content p-5" >
+            <pre><p>{{indexresult | json}}</p></pre>
+         </div>
+      </div>
+   </div>
+   <!----------------------------------------------------------------------------------------------------------------->
+   <!-- SELECTED INDEX. -->
+   <div  class="page-content p-5" *ngIf="componentToShow==indexSelected" style="display: flex"  >
+      <div class="div" id="content">
+         <h1 class="display-4 text-black">
+            Index Selected: 
+            <h1 class="display-4 text-white">{{indexSelected}}</h1>
+         </h1>
+         <div>
+            <input
+            type="search"
+            [(ngModel)]="searchvar"
+            name="search" 
+            placeholder="search"
+            />
+         </div>
+      </div>
+      <!-- table Section -->
+      <div class="col-lg-5" style="position: absolute; left: 0; top: 0%; margin:300px;">
+         <table class="table col">
+            <thead class="thead-dark">
+               <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Handle</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <th scope="col">1</th>
+                  <td>a</td>
+                  <td>a</td>
+                  <td>a</td>
+               </tr>
+               <tr>
+                  <th scope="col">2</th>
+                  <td>b</td>
+                  <td>b</td>
+                  <td>b</td>
+               </tr>
+               <tr>
+                  <th scope="col">3</th>
+                  <td>c</td>
+                  <td>c</td>
+                  <td>c</td>
+               </tr>
+            </tbody>
+         </table>
+         <!-- DRAG AND DROP OF SELECTED INDEX -->
+         <div  id="content">
+            <span class="d-block p-2 bg-primary text-white">
+               <li class="list-group-item active">upload document</li>
+            </span>
+         </div>
+         <div class="col-lg-7" id="content">
+            <input (change)="captureFile($event)" type="file">
+         </div>
+         <div class="col-md-6 footer-space">
+            <button type="submit"(click)="autoselectindex(indexSelected)" (click)="uploadFile()" >uploadFile</button><br>
+         </div>
+      </div>
+   </div>
+   
+   <!----------------------------------------------------------------------------------------------------------------->
+   <!-- ADD INDEX. -->
+   <!----------------------------------------------------------------------------------------------------------------->
+   <!-- DRAG AND DROP. -->
+   <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='addIndex'">
+      <div class="page-content p-5" id="content">
+         <span class="d-block p-2 bg-primary text-white">
+            <li class="list-group-item active">index creation window</li>
+         </span>
+      </div>
+      <div class="page-content p-5" id="content">
+         <h1 class="display-4 text-white">Please specify the index name and drag your first pdf :</h1>
+         <input
+         type="indexname"
+         [(ngModel)]="indexNameInput1"
+         name="indexname" 
+         placeholder="indexname"
+         /><br>
+         <input (change)="captureFile($event)" type="file">
+         <div class="col-md-6 footer-space">
+            <button  type="submit" (click)="uploadFile()" (click)="changeComponent('allIndex')">uploadFile</button><br>
+         </div>
+      </div>
+   </div>
+   <!-- DELETE FULL INDEX -->
+   <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='deleteAnEntireIndex'">
+      <div class="row">
+         <div class="page-content p-5" style="height: 200px;width:800px;overflow-y: scroll">
+            <h2 class="display-4 text-black">list of index</h2>
+            <li *ngFor="let item of allindex">
+               <a>
+               {{item}}</a>
+            </li>
+         </div>
+      </div>
+      <div class="page-content p-5" id="content">
+         <h1 class="display-4 text-white">To delete an entire index you must specify the name of the index to be deleted</h1>
+         <span class="d-block p-2 bg-primary text-white">
+            <li class="list-group-item active">DeleteAnEntireIndex</li>
+         </span>
+         <form >
+            <ul class="list-group">
+               <div class="row "style="margin:5px;">
+                  <input
+                  type="indexNameInputTodelete"
+                  [(ngModel)]="indexNameInputTodelete"
+                  name="indexname"
+                  placeholder="insert index name to delete"
+                  required="indexNameInputTodelete"
+                  /><br>
+               </div>
+               <button type="submit"   (click)="clickMethod()">Delete </button>
+            </ul>
+         </form>
+      </div>
+      <div class="page-content p-5" style="margin-left:300px;background-color: #eee; height: 400px;overflow-y: scroll" >
+         <pre><p >{{deleteResponse | json}}</p></pre>
+      </div>
+   </div>
+   <!-- ADD INDEX TEMPLATE -->
+   <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='XXX'">
+      <div class="page-content p-5" id="content">
+         <span class="d-block p-2 bg-primary text-white">
+            <li class="list-group-item active">ADD INDEX</li>
+         </span>
+         <form >
+            <ul class="list-group">
+               <div class="row">
+                  <div class="list-group-item" style="background-color: #eee;">
+                     <input
+                     type="indexname"
+                     [(ngModel)]="indexNameInput1"
+                     name="indexname" 
+                     placeholder="indexname"
+                     /><br>
+                     <input
+                     type="idinput"
+                     [(ngModel)]="idinput"
+                     name="id input"
+                     placeholder="id "
+                     /><br>
+                     <input
+                     type="docinput"
+                     [(ngModel)]="docinput"
+                     name="docinput"
+                     placeholder="doc"
+                     /><br>
+                  </div>
+               </div>
+               <button href="#" type="submit" (click)="postindex()">addIndex</button><br>
+            </ul>
+         </form>
+      </div>
+      <div class="row">
+         <div class="page-content p-5" style="background-color: #eee;height: 200px;width:800px;overflow-y: scroll">
+            <pre><p>{{indexresult1 | json}}</p></pre>
+         </div>
+      </div>
+   </div>
+   <!----------------------------------------------------------------------------------------------------------------->
+   <!-- DRAG AND DROP. TEMPLATE -->
+   <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='xxxx'">
+      <div class="page-content p-5" id="content">
+         <span class="d-block p-2 bg-primary text-white">
+            <li class="list-group-item active">DRAG AND DROP</li>
+         </span>
+      </div>
+      <div class="page-content p-5" id="content">  
+         <input
+         type="indexname"
+         [(ngModel)]="indexNameInput1"
+         name="indexname" 
+         placeholder="indexname"
+         /><br>
+         <input
+         type="idinput"
+         [(ngModel)]="idinput1"
+         name="id input"
+         placeholder="id "
+         /><br>
+         <input (change)="captureFile($event)" type="file">
       </div>
       <div class="col-md-6 footer-space">
-        <button type="submit" (click)="uploadFile()">uploadFile</button><br>
-        </div>
-
-      
-  </div>
-
-  <!-- DELETE FULL INDEX -->
-
-
-  <div class="row col-xs-12 col-md-8" *ngIf="componentToShow=='deleteAnEntireIndex'">
-    <div class="page-content p-5" id="content">  
-      <h1 class="display-4 text-white">To delete an entire index you must specify the name of the index to be deleted</h1>
-      <span class="d-block p-2 bg-primary text-white">
-        
-        <li class="list-group-item active">DeleteAnEntireIndex</li>
-      </span>
-      <form >
-        <ul class="list-group">
-      
-      
-        <div class="row ">
-          <div class="list-group-item" style="background-color: #eee;">
-          
-                <input
-              type="indexname"
-              [(ngModel)]="indexNameInputTodelete"
-              name="indexname" 
-              placeholder="indexname"
-          
-            /><br>
-          
-            
-           
-        
-          
-          </div>
-        
-        </div>
-        <button type="submit"   (click)="clickMethod()">Delete </button>
-      </ul>
-      
-      
-      </form>
-      
-    </div>
-    <div class="row">
-      
-      <div class="page-content p-5" style="margin:300px;background-color: #eee; height: 800px;overflow-y: scroll;" >
-      
-        <pre><p >{{deleteResponse | json}}</p></pre>
-    
-      
+         <button type="submit" (click)="uploadFile()">uploadFile</button><br>
       </div>
-    
-    </div>
-
-  </div>
+   </div>
 </body>
 <app-footer></app-footer>

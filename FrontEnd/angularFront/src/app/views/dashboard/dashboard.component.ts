@@ -26,13 +26,15 @@ export class DashboardComponent implements OnInit {
   public idinput1: string="";
   docinput!: JSON;
   docconverted!:any;
-  componentToShow: String="";
+  componentToShow: String="allIndex";
   myUsername="";
   searchvar="";
   indexSelected="23";
   indexNameInputTodelete="";
   deleteResponse!:any;
   public file:any =[]
+  indexSelectedTodeletedoc="23";
+  docsname="";
   constructor(
     public ApiService: ApiService,
     private observer: BreakpointObserver,
@@ -50,7 +52,7 @@ export class DashboardComponent implements OnInit {
   getallindex(){
     this.ApiService.getAllIndex().subscribe(data => {
       
-      //console.log(data)
+      console.log(data)
       this.foundindexes = [];
       this.allindex=data;
       data.forEach((x)=>{this.foundindexes.push(x)});
@@ -79,8 +81,21 @@ export class DashboardComponent implements OnInit {
   }
   files: File[] = [];
   changeindexselected(indexSelected){
-    console.log("indexselected is: "+indexSelected)
+   
     this.indexSelected=indexSelected
+    console.log("indexselected is: "+indexSelected)
+  }
+  autoselectindex(indexSelected){
+   
+    this.indexNameInput1=indexSelected
+    console.log("indexNameInput1 is: "+this.indexNameInput1)
+    console.log("indexselected is: "+indexSelected)
+    
+  }
+  changeindexselectedTodeleteDoc(indexSelectedTodeletedoc){
+   
+    this.indexSelectedTodeletedoc=indexSelectedTodeletedoc
+    console.log("indexselectedto delete a doc is: "+this.indexSelectedTodeletedoc)
   }
   changeComponent(componentToShow) {
     console.log("componentToShow is "+componentToShow)
@@ -102,10 +117,14 @@ export class DashboardComponent implements OnInit {
     const filecaptured=event.target.files[0]
     this.file.push(filecaptured)
     console.log(event.target.files);
+    var files = event.target.files;
+    this.docsname= files [0].name
+    console.log(this.docsname);
 
   }
   uploadFile(){//subir pdf 
     try{
+
       var formData: any = new FormData();
       
       
@@ -116,13 +135,13 @@ export class DashboardComponent implements OnInit {
       })
       
      
-      this.ApiService.postpdf(formData,this.idinput1,this.indexNameInput1).subscribe(data => {
+      this.ApiService.postpdf(formData,this.docsname,this.indexNameInput1).subscribe(data => {
 
         console.log(data)
         this.indexresult2=data
         
       })
-    
+      
 
     }catch(e){
       console.log('ERROR',e)

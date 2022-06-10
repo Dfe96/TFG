@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
+
+
 
 @Component({
   selector: 'app-edit',
@@ -10,6 +12,22 @@ export class EditComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+ 
+  }
+  deleteentireIndex(){
+    console.log("DELETED")
+    
+    /*this.ApiService.deleteentireIndex(this.indexNameInputTodelete,).subscribe(data => {
+
+        console.log(data)
+        this.deleteResponse=data
+        
+    })*/
+  }
+  clickMethod(name: string) {
+    if(confirm("Are you sure to delete "+name)) {this.deleteentireIndex()
+      
+    }
   }
 
 }
