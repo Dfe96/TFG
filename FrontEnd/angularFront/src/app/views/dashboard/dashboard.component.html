@@ -134,7 +134,7 @@
                   <th scope="col">author</th>
                   <th scope="col">date</th>
                   <th scope="col">source</th>
-                  <th scope="col">DeleteDoc</th>
+                 
                </tr>
             </thead>
             <tbody>
@@ -145,9 +145,10 @@
                   <td>{{key["_source"]["author"]|json }}</td>
                   <td>{{key["_source"]["date"]|json }}</td>
                   <button class=" btn-info "(click)="ondocSelected(key)" (click)="open(content)">view content </button>
-                  <td  class=" btn-info "(click)="ondocSelected(key)" (click)="clickMethodfordoc()"(click)="autochangeComponent()">
-                     <span class=" fa fa-minus glyphicon glyphicon-plus"><i class="fa fa-file-text" aria-hidden="true"></i></span>  
-                  </td>
+                 <td></td>
+                  <button  class="btn-info "(click)="ondocSelected(key)" (click)="clickMethodfordoc()"(click)="autochangeComponent()"> 
+                     <span class=" fa fa-minus glyphicon glyphicon-plus"> <i class="fa fa-file-text" aria-hidden="true"></i></span>  
+                  </button>
 
                  
 
