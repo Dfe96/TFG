@@ -50,7 +50,6 @@
    </ul>
 </div>
 <!-- End vertical navbar -->
-
 <!-- Page content holder -->
 <!----------------------------------------------------------------------------------------------------------------->
 <body>
@@ -60,7 +59,7 @@
          <!-- BUTTOM+ -->
          <p>
             <a  class="btn btn-info btn-lg"(click)="changeComponent('addIndex')" type="button">
-            <span class=" fa fa-plus glyphicon glyphicon-plus"><i class="fa fa-folder" aria-hidden="true"></i></span>  
+            <span class=" fa fa-plus glyphicon glyphicon-plus"><i class="fa fa-file-text" aria-hidden="true"></i></span>  
             </a>
          </p>
          <div class="separator"></div>
@@ -108,6 +107,7 @@
    </div>
    <!----------------------------------------------------------------------------------------------------------------->
    <!-- SELECTED INDEX. -->
+   <!--MATCH Section -->
    <div  class="page-content p-5" *ngIf="componentToShow==indexSelected" style="display: flex"  >
       <div class="div" id="content">
          <h1 class="display-4 text-black">
@@ -119,10 +119,21 @@
             type="search"
             [(ngModel)]="searchvar"
             name="search" 
-            placeholder="search"
+            placeholder="what would you like to search?"
             />
+            <button type="submit" (click)="searchMatch(searchvar)"(click)="open(matchContent)">search </button>
          </div>
       </div>
+      <!-- CONTENT MODAL FOR MATCH Function -->
+      <ng-template #matchContent let-c="close" let-d="dismiss">
+         <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">your search is"{{searchvar}} ", results for your search</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+         </div>
+         <div class="modal-body">
+            <p>{{jsondocmatch}}</p>
+         </div>
+      </ng-template>
       <!-- table Section -->
       <div class="col-lg-5" style="position: absolute; left: 0; top: 0%; margin:300px;">
          <table class="table col">
@@ -134,42 +145,34 @@
                   <th scope="col">author</th>
                   <th scope="col">date</th>
                   <th scope="col">source</th>
-                 
                </tr>
             </thead>
             <tbody>
                <tr *ngFor="let key of jsondoc">
-                  <td>{{key["_id"]|json }}</td>
-                  <td>{{key["_type"]|json }}</td>
-                  <td>{{key["_score"]|json }}</td>
-                  <td>{{key["_source"]["author"]|json }}</td>
-                  <td>{{key["_source"]["date"]|json }}</td>
-                  <button class=" btn-info "(click)="ondocSelected(key)" (click)="open(content)">view content </button>
-                 <td></td>
-                  <button  class="btn-info "(click)="ondocSelected(key)" (click)="clickMethodfordoc()"(click)="autochangeComponent()"> 
-                     <span class=" fa fa-minus glyphicon glyphicon-plus"> <i class="fa fa-file-text" aria-hidden="true"></i></span>  
+                  <td>{{key["_id"] }}</td>
+                  <td>{{key["_type"] }}</td>
+                  <td>{{key["_score"] }}</td>
+                  <td>{{key["_source"]["author"] }}</td>
+                  <td>{{key["_source"]["date"] }}</td>
+                  <button  class="btn btn-info"(click)="ondocSelected(key)" (click)="open(content)">view content </button>
+                  <td></td>
+                  <button  class="btn-info "(click)="ondocSelected(key)" (click)="clickMethodfordoc()"> 
+                  <span class=" fa fa-trash glyphicon glyphicon-plus"> </span>  
                   </button>
-
-                 
-
-                  
                </tr>
-       
             </tbody>
          </table>
-         
          <!-- CONTENT MODAL FOR DOC -->
-<ng-template #content let-c="close" let-d="dismiss">
-   <div class="modal-header">
-     <h4 class="modal-title" id="modal-basic-title">{{this._id}}</h4>
-     <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
-   </div>
-   <div class="modal-body">
-     <p>{{_source}}</p>
-   </div>
-   
- </ng-template>
- <!-- END CONTENT MODAL FOR DOC -->
+         <ng-template #content let-c="close" let-d="dismiss">
+            <div class="modal-header">
+               <h4 class="modal-title" id="modal-basic-title">{{this._id}}</h4>
+               <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+            </div>
+            <div class="modal-body">
+               <p>{{_source}}</p>
+            </div>
+         </ng-template>
+         <!-- END CONTENT MODAL FOR DOC -->
          <!-- DRAG AND DROP OF SELECTED INDEX -->
          <div  id="content">
             <span class="d-block p-2 bg-primary text-white">
@@ -184,7 +187,6 @@
          </div>
       </div>
    </div>
-   
    <!----------------------------------------------------------------------------------------------------------------->
    <!-- ADD INDEX. -->
    <!----------------------------------------------------------------------------------------------------------------->

@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
   _score="";
   _id="";
   _source
-  lista:string[]=["hola","que","tal","estas"];
+  jsondocmatch!:any;
    
   constructor(
     public ApiService: ApiService,
@@ -87,6 +87,17 @@ export class DashboardComponent implements OnInit {
         this.indexresult1=data
         
     })
+  }
+  searchMatch(searchvar){
+    this.searchvar=searchvar
+    console.log("this.index selected is:",this.indexSelected)
+    console.log("this.searchvar selected is:",this.indexSelected)
+    this.ApiService.searchMatch(searchvar,this.indexSelected).subscribe(data => {
+
+      console.log("searchdata is : ",data)
+      this.jsondocmatch=data
+      
+  })
   }
   files: File[] = [];
   changeindexselected(indexSelected){

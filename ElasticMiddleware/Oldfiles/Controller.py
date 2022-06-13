@@ -357,6 +357,28 @@ def getMapp(index: str):
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         print(e)
         raise e
+@app.post("/searchMatch")
+def postMatch(index: str,matchRequested: str):
+    try:
+        path = urlelastic + index + '/_search'
+        body={"query": { "match": {"text": matchRequested}}}
+        r = requests.post(path,json=body)
+
+        response=json.loads(r.text)
+        responsecode=r.status_code
+
+        if(responsecode!=200):
+            return (json.loads(r.text))
+        #
+        # for x in response['hits']['hits'] :
+        #     print(x['_id'])
+        # print(response)
+        return (json.loads(r.text))
+    except Exception as e:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(e)
+        raise e
+
 
 @app.delete("/deleteindex",status_code=200)
 def deleteAllIndex(index: str):

@@ -89,9 +89,15 @@ export class ApiService {
     
   }
   getdocs(index: any) {
-    let urlnewIndex=this.url+"/search"
+    let urlgetdocs=this.url+"/search"
     let params = new HttpParams().set("index",index); //Create new HttpParams
-    return this.http.get(urlnewIndex, {params: params})
+    return this.http.get(urlgetdocs, {params: params})
+    
+  }
+  searchMatch(index: any,searchvar: any) {
+    let urlsearchmatch=this.url+"/searchMatch"
+    let params = new HttpParams().set("index",index).set("matchRequested", searchvar); //Create new HttpParams
+    return this.http.post(urlsearchmatch, {params: params})
     
   }
 
