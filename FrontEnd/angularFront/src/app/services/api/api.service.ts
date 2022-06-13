@@ -66,13 +66,13 @@ export class ApiService {
   }
   postIndex(index: any,id: any,json: any) {
     let urlnewIndex=this.url+"/newIndex"
-    let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
+    let params = new HttpParams().set("index",index).set("id", id).set("author",this.cookies.get("username")); //Create new HttpParams
     return this.http.post(urlnewIndex,json, {params: params})
     
   }
-  postpdf(pdf: any,id: any,index: any) {
+  postpdf(pdf: any,id: any,index: any,author: any) {
     let urlpdftoJson=this.url+"/pdftoJson"
-    let params = new HttpParams().set("index",index).set("id", id); //Create new HttpParams
+    let params = new HttpParams().set("index",index).set("id", id).set("author", author); //Create new HttpParams
     return this.http.post(urlpdftoJson,pdf,{params: params})
     
   }
@@ -80,6 +80,18 @@ export class ApiService {
     let urlDelete=this.url+"/deleteindex"
     let params = new HttpParams().set("index",index); //Create new HttpParams
     return this.http.delete(urlDelete,{params: params})
+    
+  }
+  deletedoc(index: any,id: any) {
+    let urlDelete=this.url+"/indexbyid"
+    let params = new HttpParams().set("index",index).set("id",id); //Create new HttpParams
+    return this.http.delete(urlDelete,{params: params})
+    
+  }
+  getdocs(index: any) {
+    let urlnewIndex=this.url+"/search"
+    let params = new HttpParams().set("index",index); //Create new HttpParams
+    return this.http.get(urlnewIndex, {params: params})
     
   }
 

@@ -2,6 +2,7 @@ import { Component, NgIterable, OnInit, ViewChild } from '@angular/core';
 import{ApiService} from '../../services/api/api.service';
 import { Injectable } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Xtb } from '@angular/compiler';
 import { Observable } from 'rxjs';
@@ -35,9 +36,17 @@ export class DashboardComponent implements OnInit {
   public file:any =[]
   indexSelectedTodeletedoc="23";
   docsname="";
+  jsondoc!:any;
+  _type="";
+  _score="";
+  _id="";
+  _source
+  lista:string[]=["hola","que","tal","estas"];
+   
   constructor(
     public ApiService: ApiService,
     private observer: BreakpointObserver,
+    private modalService: NgbModal
     ) {}
   ngOnInit() {
     //console.log("indexselected cambia a "+this.indexSelected)
@@ -85,11 +94,13 @@ export class DashboardComponent implements OnInit {
     this.indexSelected=indexSelected
     console.log("indexselected is: "+indexSelected)
   }
-  autoselectindex(indexSelected){
+  
+  onSelectindex(indexSelected){
    
     this.indexNameInput1=indexSelected
     console.log("indexNameInput1 is: "+this.indexNameInput1)
     console.log("indexselected is: "+indexSelected)
+
     
   }
   changeindexselectedTodeleteDoc(indexSelectedTodeletedoc){
@@ -101,6 +112,16 @@ export class DashboardComponent implements OnInit {
     console.log("componentToShow is "+componentToShow)
    
     this.componentToShow = componentToShow;
+  }
+  autochangeComponent(){
+    //(click)="getuserdoc(item)" (click)="changeindexselected(item)"(click)="changeComponent(item)"
+    console.log("estoy aqui!")
+    
+    
+    this.changeComponent("")
+    this.getuserdoc(this.indexSelected)
+    this.componentToShow = this.indexSelected;
+    this.changeComponent(this.componentToShow)
   }
   
   onSelect(event) {
@@ -135,7 +156,7 @@ export class DashboardComponent implements OnInit {
       })
       
      
-      this.ApiService.postpdf(formData,this.docsname,this.indexNameInput1).subscribe(data => {
+      this.ApiService.postpdf(formData,this.docsname,this.indexNameInput1,this.myUsername).subscribe(data => {
 
         console.log(data)
         this.indexresult2=data
@@ -158,9 +179,90 @@ export class DashboardComponent implements OnInit {
         
     })
   }
+  deletedoc(){
+    this.indexNameInputTodelete=this.indexSelected
+    console.log("DELETED")
+    console.log(this.indexNameInputTodelete)
+    console.log(this._id)
+    this.ApiService.deletedoc(this.indexNameInputTodelete,this._id).subscribe(data => {
+        
+        this.deleteResponse=data
+        
+    })
+  }
   clickMethod() {
     if(confirm("Are you sure to delete "+this.indexNameInputTodelete)) {this.deleteentireIndex()
       
+    }
+  }
+  clickMethodfordoc() {
+    if(confirm("Are you sure to delete "+this.docinput)) {this.deletedoc()
+      
+    }
+  }
+  getuserdoc(indexSelected){
+    console.log("abogadoo");
+    this.ApiService.getdocs(indexSelected).subscribe(data => {
+    
+   
+    this.jsondoc=data['hits']['hits']
+    console.log("jsondocis:",this.jsondoc);
+      
+     
+      for (var key in this.jsondoc) {
+       console.log(this.jsondoc[key])
+        
+        this._id=this.jsondoc[key]['_id']
+        this._type=this.jsondoc[key]['_type']
+        this._score=this.jsondoc[key]['_score']
+        this._source=this.jsondoc[key]['_source']['text']
+        /*console.log("Jsonindex is "+this.jsondoc[key]['_index'])
+        console.log("Jsonindex is "+this.jsondoc[key]['_type'])
+        console.log("Jsonindex is "+this.jsondoc[key]['_score'])
+        console.log("Jsonindex is "+this.jsondoc[key]['_id'])
+        console.log("Jsonindex is "+this.jsondoc[key]['_source']['text'])
+       */
+
+        }
+  })
+  }
+  
+ ondocSelected(selectedDoc){
+  
+  this._source=selectedDoc['_source']['text']
+  this._id=selectedDoc['_id']
+  console.log("delectedDoc is: ",selectedDoc['_id'])
+  console.log("this._id is: ",this._id)
+  //console.log("_source is: ",this._source)
+ }
+ changeindexselectedintoIndex(indexSelected){
+   
+  this.indexSelected=indexSelected['_index']
+  console.log("indexselected is: "+indexSelected)
+}
+
+
+  closeResult: string = '';
+  open(content:any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  } 
+    
+  /**
+   * Write code on Method
+   *
+   * @return response()
+   */
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
     }
   }
  

@@ -50,6 +50,7 @@
    </ul>
 </div>
 <!-- End vertical navbar -->
+
 <!-- Page content holder -->
 <!----------------------------------------------------------------------------------------------------------------->
 <body>
@@ -59,14 +60,14 @@
          <!-- BUTTOM+ -->
          <p>
             <a  class="btn btn-info btn-lg"(click)="changeComponent('addIndex')" type="button">
-            <span class=" fa fa-plus glyphicon glyphicon-plus"><i class="fa fa-file-text" aria-hidden="true"></i></span>  
+            <span class=" fa fa-plus glyphicon glyphicon-plus"><i class="fa fa-folder" aria-hidden="true"></i></span>  
             </a>
          </p>
          <div class="separator"></div>
          <!-- loop  -->     
          <div>
             <li *ngFor="let item of allindex">
-               <button  class="button-63" (click)="changeindexselected(item)"(click)="changeComponent(item)" >
+               <button  class="button-63" (click)="getuserdoc(item)" (click)="changeindexselected(item)"(click)="changeComponent(item)" >
                {{item}}</button>
             </li>
          </div>
@@ -127,33 +128,47 @@
          <table class="table col">
             <thead class="thead-dark">
                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">doc</th>
+                  <th scope="col">type</th>
+                  <th scope="col">score</th>
+                  <th scope="col">author</th>
+                  <th scope="col">date</th>
+                  <th scope="col">source</th>
+                  <th scope="col">DeleteDoc</th>
                </tr>
             </thead>
             <tbody>
-               <tr>
-                  <th scope="col">1</th>
-                  <td>a</td>
-                  <td>a</td>
-                  <td>a</td>
+               <tr *ngFor="let key of jsondoc">
+                  <td>{{key["_id"]|json }}</td>
+                  <td>{{key["_type"]|json }}</td>
+                  <td>{{key["_score"]|json }}</td>
+                  <td>{{key["_source"]["author"]|json }}</td>
+                  <td>{{key["_source"]["date"]|json }}</td>
+                  <button class=" btn-info "(click)="ondocSelected(key)" (click)="open(content)">view content </button>
+                  <td  class=" btn-info "(click)="ondocSelected(key)" (click)="clickMethodfordoc()"(click)="autochangeComponent()">
+                     <span class=" fa fa-minus glyphicon glyphicon-plus"><i class="fa fa-file-text" aria-hidden="true"></i></span>  
+                  </td>
+
+                 
+
+                  
                </tr>
-               <tr>
-                  <th scope="col">2</th>
-                  <td>b</td>
-                  <td>b</td>
-                  <td>b</td>
-               </tr>
-               <tr>
-                  <th scope="col">3</th>
-                  <td>c</td>
-                  <td>c</td>
-                  <td>c</td>
-               </tr>
+       
             </tbody>
          </table>
+         
+         <!-- CONTENT MODAL FOR DOC -->
+<ng-template #content let-c="close" let-d="dismiss">
+   <div class="modal-header">
+     <h4 class="modal-title" id="modal-basic-title">{{this._id}}</h4>
+     <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+   </div>
+   <div class="modal-body">
+     <p>{{_source}}</p>
+   </div>
+   
+ </ng-template>
+ <!-- END CONTENT MODAL FOR DOC -->
          <!-- DRAG AND DROP OF SELECTED INDEX -->
          <div  id="content">
             <span class="d-block p-2 bg-primary text-white">
@@ -164,7 +179,7 @@
             <input (change)="captureFile($event)" type="file">
          </div>
          <div class="col-md-6 footer-space">
-            <button type="submit"(click)="autoselectindex(indexSelected)" (click)="uploadFile()" >uploadFile</button><br>
+            <button type="submit"(click)="onSelectindex(indexSelected)" (click)="uploadFile()" >uploadFile</button><br>
          </div>
       </div>
    </div>

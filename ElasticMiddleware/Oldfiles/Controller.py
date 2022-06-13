@@ -283,6 +283,7 @@ async def postindexpdf(index: Any,author: str = "ElBarto", id: str =" 1", file: 
         my_new_string = re.sub('[^a-zA-Z0-9 \n\.]', '', request)#llamamos a re.(regresion library) con objeto de eliminar caracteres especiales.EX:Recuperaci\´on\\nde Informaci\´on -->Recuperacion\nde Informacion
         jsonresponse = {"text": my_new_string,
                         "date":dt_object,
+                        "author":author,
                         "text": my_new_string}
         print("index is", index)
         print("id is", id)
