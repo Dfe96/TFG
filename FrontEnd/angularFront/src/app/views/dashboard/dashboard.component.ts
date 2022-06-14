@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   indexresult!:JSON;
   indexresult1!:any;
   indexresult2!:any;
+  indexresult3!:any;
   indexNameInput!:string;
   public indexNameInput1: string="";
   public idinput: string="";
@@ -42,6 +43,7 @@ export class DashboardComponent implements OnInit {
   _id="";
   _source
   jsondocmatch!:any;
+  indexmapping="";
    
   constructor(
     public ApiService: ApiService,
@@ -91,13 +93,39 @@ export class DashboardComponent implements OnInit {
   searchMatch(searchvar){
     this.searchvar=searchvar
     console.log("this.index selected is:",this.indexSelected)
-    console.log("this.searchvar selected is:",this.indexSelected)
-    this.ApiService.searchMatch(searchvar,this.indexSelected).subscribe(data => {
+    console.log("this.searchvar selected is:",searchvar)
+    this.ApiService.searchMatch(this.indexSelected,searchvar).subscribe(data => {
 
       console.log("searchdata is : ",data)
-      this.jsondocmatch=data
+      this.jsondocmatch=data['hits']['hits'] 
+      for (var key in this.jsondocmatch) {
+        console.log(this.jsondocmatch[key])
+         
+         this._id=this.jsondocmatch[key]['_id']
+         this._type=this.jsondocmatch[key]['_type']
+         this._score=this.jsondocmatch[key]['_score']
+         this._source=this.jsondocmatch[key]['_source']['text']
+         /*console.log("Jsonindex is "+this.jsondocmatch[key]['_index'])
+         console.log("Jsonindex is "+this.jsondocmatch[key]['_type'])
+         console.log("Jsonindex is "+this.jsondocmatch[key]['_score'])
+         console.log("Jsonindex is "+this.jsondocmatch[key]['_id'])
+         console.log("Jsonindex is "+this.jsondocmatch[key]['_source']['text'])
+        */
+ 
+         }
+
       
   })
+  }
+  getMapping(indexmapping){
+    console.log(indexmapping)
+    this.ApiService.getMapping(indexmapping).subscribe(data => {
+
+      console.log(data)
+      this.indexresult3=data
+      
+    })
+
   }
   files: File[] = [];
   changeindexselected(indexSelected){
@@ -261,7 +289,10 @@ export class DashboardComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   } 
-    
+  logOut(){
+
+      this.ApiService.logOut()
+  }
   /**
    * Write code on Method
    *

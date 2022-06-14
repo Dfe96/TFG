@@ -357,8 +357,8 @@ def getMapp(index: str):
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         print(e)
         raise e
-@app.post("/searchMatch")
-def postMatch(index: str,matchRequested: str):
+@app.get("/searchMatch")
+def getmatch(index: str,matchRequested: str):
     try:
         path = urlelastic + index + '/_search'
         body={"query": { "match": {"text": matchRequested}}}

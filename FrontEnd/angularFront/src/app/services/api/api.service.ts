@@ -45,6 +45,12 @@ export class ApiService {
     this.cookies.set("token", token);
     
   }
+  logOut() {
+    console.log(this.getMyuser())
+    this.cookies.delete("username");
+    this.cookies.delete("token");
+    
+  }
   getToken() {
     return this.cookies.get("token");
   }
@@ -96,8 +102,14 @@ export class ApiService {
   }
   searchMatch(index: any,searchvar: any) {
     let urlsearchmatch=this.url+"/searchMatch"
-    let params = new HttpParams().set("index",index).set("matchRequested", searchvar); //Create new HttpParams
-    return this.http.post(urlsearchmatch, {params: params})
+    let params = new HttpParams().set("index",index).set("matchRequested",searchvar); //Create new HttpParams
+    return this.http.get(urlsearchmatch,{params: params})
+    
+  }
+  getMapping(index: any) {
+    let urlmapping=this.url+"/mapping"
+    let params = new HttpParams().set("index",index); //Create new HttpParams
+    return this.http.get(urlmapping,{params: params})
     
   }
 
