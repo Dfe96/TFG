@@ -1,5 +1,12 @@
 version: '2.2'
 services:
+  angularcli:
+    build: ./angularFront
+    ports:
+      - "4200:4200"
+    networks:
+      - elastic
+
   mongo:
     image: mongo:latest
     restart: always
@@ -57,6 +64,7 @@ services:
 volumes:
   data01:
     driver: local
+
 networks:
   elastic:
     driver: bridge

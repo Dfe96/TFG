@@ -6,8 +6,6 @@
 import fitz
 import json
 
-document  = fitz.open('/home/diego/Documentos/git/TFG/ElasticMiddleware/archivosDePrueba/paper339.pdf')
-
 def toJson(document:any):
 
 
@@ -24,8 +22,3 @@ def toJson(document:any):
     #print(json_object)
     return text
 
-
-
-if __name__ == "__main__":
-    a=toJson(document)
-    print(a)

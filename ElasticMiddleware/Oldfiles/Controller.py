@@ -29,25 +29,22 @@ from src.services.oauth import get_current_user
 import requests
 import re
 import time
+from starlette.responses import JSONResponse
+from src.services.pdftojson import toJson
+from datetime import datetime
 # import matplotlib.pyplot as plt
 # import requests
 # from PIL import Image
 # import io
 
 # MONGO CLIENT CONFIG
-from starlette.responses import JSONResponse
-from src.services.pdftojson import toJson
-from datetime import datetime
+
 import tempfile
 
 try:
     urlelastic = 'http://localhost:9200/'
     app = FastAPI()
-    origins = [
-        "http://localhost:9200",
-        "http://localhost:27017",
-        "http://localhost:4200"
-    ]
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=['*'],
@@ -281,7 +278,7 @@ async def postindexpdf(index: Any,author: str = "ElBarto", id: str =" 1", file: 
         timestamp=time.time()
         dt_object = datetime.fromtimestamp(timestamp)
         my_new_string = re.sub('[^a-zA-Z0-9 \n\.]', '', request)#llamamos a re.(regresion library) con objeto de eliminar caracteres especiales.EX:Recuperaci\´on\\nde Informaci\´on -->Recuperacion\nde Informacion
-        jsonresponse = {"text": my_new_string,
+        jsonresponse = {
                         "date":dt_object,
                         "author":author,
                         "text": my_new_string}
@@ -383,7 +380,7 @@ def getmatch(index: str,matchRequested: str):
 @app.delete("/deleteindex",status_code=200)
 def deleteAllIndex(index: str):
     try:
-        path = urlelastic + index
+        path = urlelastic +index
         r = requests.delete(path)
 
         txtresponse=(json.loads(r.text))
