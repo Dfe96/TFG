@@ -44,7 +44,7 @@
          </div>
       </div>
       <li class="nav-item" style="position: absolute; bottom: 0; margin-bottom:30px;">
-         <button (click)="logOut()"  onclick="history.go(0)" class="dropdown-item">
+         <button (click)="logOut()"  (click)=refreshPage() class="dropdown-item">
          <i class="fa fa-sign-out mr-3 text-primary fa-fw"></i>
          log Out
          </button>
@@ -148,7 +148,7 @@
                      <td>{{key["_source"]["date"] }}</td>
                      <button  class="btn btn-info"(click)="ondocSelected(key)" (click)="open(content)">view content </button>
                      <td></td>
-                     <button  class="btn-info "(click)="ondocSelected(key)" (click)="clickMethodfordoc()"  onclick="history.go(0)"> 
+                     <button  class="btn-info "(click)="ondocSelected(key)" (click)="clickMethodfordoc()" (click)=refreshPage()> 
                      <span class=" fa fa-trash glyphicon glyphicon-plus"> </span>  
                      </button>
                   </tr>
@@ -179,7 +179,7 @@
                <input (change)="captureFile($event)" type="file">
             </div>
             <div class="col-md-6 footer-space">
-               <button type="submit"(click)="onSelectindex(indexSelected)" (click)="uploadFile()" onclick="history.go(0)" >uploadFile</button><br>
+               <button type="submit"(click)="onSelectindex(indexSelected)" (click)="uploadFile()" (click)=refreshPage() >uploadFile</button><br>
             </div>
          </div>
          
@@ -205,7 +205,7 @@
          /><br>
          <input (change)="captureFile($event)" type="file">
          <div class="col-md-6 footer-space">
-            <button  type="submit" (click)="uploadFile()" (click)="changeComponent('allIndex')" onclick="history.go(0)">uploadFile</button><br>
+            <button  type="submit" (click)="uploadFile()" (click)="changeComponent('allIndex')" (click)=refreshPage()>uploadFile</button><br>
          </div>
       </div>
    </div>
@@ -236,7 +236,7 @@
                   required="indexNameInputTodelete"
                   /><br>
                </div>
-               <button type="submit"   (click)="clickMethod()" onclick="history.go(0)">Delete </button>
+               <button type="submit"   (click)="clickMethod()" (click)=refreshPage()>Delete </button>
             </ul>
          </form>
       </div>
@@ -328,7 +328,7 @@
                   required="indexNameInputTodelete"
                   /><br>
                </div>
-               <button type="submit"   (click)="clickMethod()" onclick="history.go(0)">Delete </button>
+               <button type="submit"   (click)="clickMethod()"(click)=refreshPage()>Delete </button>
             </ul>
          </form>
       </div>

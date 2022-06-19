@@ -8,6 +8,7 @@ import { CookieService } from "ngx-cookie-service";
   providedIn: 'root'
 })
 export class ApiService {
+  //url:string="http://localhost:8000"
   url:string="http://localhost:8000"
   errorMessage;
   form: any;

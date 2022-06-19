@@ -208,6 +208,9 @@ export class DashboardComponent implements OnInit {
     }
 
   }
+   refreshPage(){
+    window.location.reload();
+} 
   deleteentireIndex(){
     console.log("DELETED")
     

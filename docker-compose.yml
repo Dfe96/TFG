@@ -7,6 +7,7 @@ services:
     networks:
       - elastic
 
+
   mongo:
     image: mongo:latest
     restart: always
