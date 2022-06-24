@@ -7,11 +7,6 @@
 #pip install pymongo
 #import http.client
 
-
-
-
-import uvicorn
-
 from elasticsearch import Elasticsearch
 import pandas as pd
 import json
@@ -31,20 +26,22 @@ from src.services.oauth import get_current_user
 import requests
 import re
 import time
-from starlette.responses import JSONResponse
 from src.services.pdftojson import toJson
 from datetime import datetime
+from starlette.responses import JSONResponse
 # import matplotlib.pyplot as plt
 # import requests
 # from PIL import Image
 # import io
 #MONGO CLIENT CONFIG
-from starlette.responses import JSONResponse
+
+
+
+
 
 try:
-    app = FastAPI()
-    app = FastAPI()
 
+    app = FastAPI()
     app.add_middleware(
         CORSMiddleware,
         allow_origins=['*'],
@@ -58,11 +55,11 @@ try:
     connect = MongoClient(uri)
     db=connect.myDb
     collection = db.demoCollection
-    # db = connect["User"]
     #ELASTIC CLIENT CONFIG
-
-    es = Elasticsearch("http://es01:9200")#local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
-    urlelastic = 'http://es01:9200/'#this url will be used in Request petitions, it is similar kind of request as Elasticsearch APIPython but atttacking directly to Elastic API
+    #local ip 127.0.0.1 and resolved ip by docker 172.28.0.X for elasticnetwork
+    es = Elasticsearch("http://es01:9200")
+    #this url will be used in Request petitions, it is similar kind of request as Elasticsearch APIPython but atttacking directly to Elastic API
+    urlelastic = 'http://es01:9200/'
 
 
 except ConnectionFailure as e:
@@ -90,12 +87,12 @@ class Item(BaseModel):
     requests: List[Any]
 
 
-# -------------------------------------------------CRUD MONGODB ------------------------------------.-----------------------------------------
+
 @app.get("/")
 def read_root(current_user: User = Depends(get_current_user)):
     return {"data": "Hello OWrld"}
 
-
+# -------------------------------------------------CRUD MONGODB ------------------------------------.-----------------------------------------
 @app.post('/register')
 def create_user(request: User):
     try:
@@ -116,7 +113,7 @@ def create_user(request: User):
                                 content={"res": "created"}
                                 )
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error:")
         print(e)
         return str(e)
 
@@ -135,41 +132,12 @@ def login(request: OAuth2PasswordRequestForm = Depends()):
                             content={"access_token": access_token, "token_type": "bearer"})
 
     except HTTPException as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error:")
 
         raise e
 
-
-@app.post("/newUser", status_code=201)
-async def createUser(username: str, password: str):
-    try:
-
-        credentials = {
-            "username": str(username),
-            "password": str(password)
-
-        }
-        if collection.count_documents(
-                {"username": username}) != 0:  # if user exist we send error mesage and break operation
-
-            return JSONResponse(status_code=400, content="username already exist.")
-        else:
-
-            collection.insert_one(credentials)
-            userfind = collection.find_one({"username": username}, {"_id": 0})
-            print("colis\n")
-            print(userfind)
-            return JSONResponse(status_code=201,
-                                content=userfind
-                                )
-    except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        print(e)
-        return str(e)
-
-
 @app.get("/allusers")
-def getUsers():
+def get_users():
     allusers = []
     list(allusers)
     col = collection.find({}, {"_id": 0})
@@ -183,7 +151,7 @@ def getUsers():
 
 
 @app.delete("/users")
-async def deleteUSer(username: str):
+async def delete_user(username: str):
     # collection.deleteOne({name:"Maki"})
 
     try:
@@ -206,7 +174,7 @@ async def deleteUSer(username: str):
 
             return JSONResponse(status_code=400, content="user doesnt exist.")
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         return str(e)
 
@@ -230,45 +198,20 @@ async def getUser(username: str):
 
             return JSONResponse(status_code=400, content="username doesnt exist.")
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         return str(e)
-
-
-# -------------------------------------------------REACHING MIDDLEWARE CALLS  ------------------------------------.-----------------------------------------
-# /my-first-api call it is just a mock call to see if we can reach the middleware
-@app.get("/my-first-api")
-def hello(name=None):
-    if name is None:  # establecemos conciciones
-        text = 'Hello!'
-
-    else:
-        text = 'Hello ' + name + '!'
-
-    return text
-
-
-@app.get("/get-iris")
-def get_iris():
-    url = "docs.json"
-    df = pd.read_json("../archivosDePrueba/docs.json")
-    print(df)
-    return (df.to_json())
 
 
 # ----------------------------------------------------------CRUD Elasticsearch --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/newIndex", status_code=201)
-async def postindex(index: Any, request: Request, id: Any = 1):
+async def post_index(index: Any, request: Request, id: Any = 1):
     try:
         print(await request.json())
-        print(
-            "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-
+        print("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         print("u know, for test")
-        # return {"received_request_body": "skipIs : "+str(index) +" limit "+ str(id)+"    "+ str(await request.body())}
         j = await request.json()
-        # jsonresponse={str(index): j}#generamos un onjeto json que concatenamos con la request
         print("index is", index)
         print("request is", j)
         print("id is", id)
@@ -276,19 +219,20 @@ async def postindex(index: Any, request: Request, id: Any = 1):
         return index
 
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         raise e
 
 
 @app.post("/pdftoJson", status_code=201)
-async def postindexpdf(index: Any,author: str = "ElBarto", id: str =" 1", file: bytes = File(), ):
+async def post_indexpdf(index: Any,author: str = "ElBarto", id: str =" 1", file: bytes = File(), ):
     try:
         request = toJson(file)#llamamos a toJson que usa la libreria FLITZ para extraer la información del pdf
-        # j=await request.json()
         timestamp=time.time()
         dt_object = datetime.fromtimestamp(timestamp)
-        my_new_string = re.sub('[^a-zA-Z0-9 \n\.]', '', request)#llamamos a re.(regresion library) con objeto de eliminar caracteres especiales.EX:Recuperaci\´on\\nde Informaci\´on -->Recuperacion\nde Informacion
+
+        #llamamos a re.(regresion library) con objeto de eliminar caracteres especiales.EX:Recuperaci\´on\\nde Informaci\´on -->Recuperacion\nde Informacion
+        my_new_string = re.sub('[^a-zA-Z0-9 \n\.]', '', request)
         jsonresponse = {
                         "date":dt_object,
                         "author":author,
@@ -300,24 +244,19 @@ async def postindexpdf(index: Any,author: str = "ElBarto", id: str =" 1", file: 
             "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
 
         print("u know, for test")
-        # return {"received_request_body": "skipIs : "+str(index) +" limit "+ str(id)+"    "+ str(await request.body())}
-        # j=await request.json()
-        ## jsonresponse={str(index): request}#generamos un onjeto json que concatenamos con la request
-
-        # print(jsonresponse)
         resp = es.index(index=index, id=id, document=jsonresponse)
         return JSONResponse(status_code=201,
                             content=request
                             )
 
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         raise e
 
 
 @app.get("/index")
-def getIndice(index: str, id: str):
+def get_Index(index: str, id: str):
     resp = es.get(index=index, id=id)
     print(resp['_source'])
     jsonresp = json.dumps(resp['_source'], indent=4)
@@ -326,7 +265,7 @@ def getIndice(index: str, id: str):
 
 
 @app.get("/allindex")
-def getIndice():
+def get_Indexes():
     schema = es.indices.get_alias().keys()
 
     allindexlist = []
@@ -339,13 +278,13 @@ def getIndice():
 
 
 @app.get("/mapping")
-def getMapp(index: str):
+def get_Mapp(index: str):
     path = urlelastic + index + '/_mapping'
 
     r = requests.get(path)
     return (json.loads(r.text))
 @app.get("/search")
-def getMapp(index: str):
+def search(index: str):
     try:
         path = urlelastic + index + '/_search'
 
@@ -362,34 +301,29 @@ def getMapp(index: str):
         # print(response)
         return (json.loads(r.text))
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         raise e
 @app.get("/searchMatch")
-def getmatch(index: str,matchRequested: str):
+def get_match(index: str,matchRequested: str):
     try:
         path = urlelastic + index + '/_search'
         body={"query": { "match": {"text": matchRequested}}}
         r = requests.post(path,json=body)
-
-        response=json.loads(r.text)
         responsecode=r.status_code
-
         if(responsecode!=200):
-            return (json.loads(r.text))
-        #
-        # for x in response['hits']['hits'] :
-        #     print(x['_id'])
-        # print(response)
+            return JSONResponse(status_code=responsecode,
+                                content=json.loads(r.text)
+                                )
         return (json.loads(r.text))
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         raise e
 
 
 @app.delete("/deleteindex",status_code=200)
-def deleteAllIndex(index: str):
+def delete_Index(index: str):
     try:
         path = urlelastic +index
         r = requests.delete(path)
@@ -399,17 +333,17 @@ def deleteAllIndex(index: str):
                             content=txtresponse
                             )
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         raise e
 
 
 @app.delete("/indexbyid")
-def deleteIndexById(index: str, id: str):
+def delete_IndexById(index: str, id: str):
     resp = es.delete(index=index, id=id)
     return resp
 @app.post("/searchinIndex")
-def searchinIndex(index: str,body:Any):
+def search_inIndex(index: str,body:Any):
     path=urlelastic+index+"/_search"
     #-----------------------------------------------------------------------------REVISAR
     return
@@ -431,7 +365,7 @@ async def root(request: Request, index, id: Any = 1):
         return resp
 
     except Exception as e:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print("Error")
         print(e)
         return str(e)
 
