@@ -8,15 +8,10 @@
 #import http.client
 
 from elasticsearch import Elasticsearch
-
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
-from fastapi.middleware.cors import CORSMiddleware
-
-
-
 
 
 class config:

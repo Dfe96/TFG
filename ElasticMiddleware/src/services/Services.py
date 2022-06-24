@@ -1,37 +1,21 @@
 
-from passlib.context import CryptContext
-from datetime import datetime, timedelta
-from jose import JWTError, jwt
-from src.models.token import TokenData
-from fastapi import Depends,HTTPException
-from passlib.context import CryptContext
-
-from fastapi.security import OAuth2PasswordBearer
-import fitz
-
-from elasticsearch import Elasticsearch
-import pandas as pd
 import json
-from fastapi import FastAPI, HTTPException, Depends, Request, status, File, UploadFile
-from typing import Any, List
-
-from fastapi.security import OAuth2PasswordRequestForm
-from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure
-from fastapi.middleware.cors import CORSMiddleware
-from src.models.user import *
-from src.models.token import *
-
-
-import requests
 import re
 import time
-from src.services.pdftojson import toJson
-from datetime import datetime
+from datetime import datetime, timedelta
+from typing import Any
+import fitz
+import requests
+from fastapi import HTTPException, Depends, status, File
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from passlib.context import CryptContext
 from starlette.responses import JSONResponse
+
 from src.configuration import config
-
-
+from src.models.token import *
+from src.models.user import *
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 pwd_cxt = CryptContext(schemes =["bcrypt"],deprecated="auto")
@@ -219,7 +203,7 @@ class ServiceElastic():
 
     def post_indexpdf(index: Any,author: str = "ElBarto", id: str =" 1", file: bytes = File(), ):
         try:
-            request = toJson(file)#llamamos a toJson que usa la libreria FLITZ para extraer la información del pdf
+            request = ServiceElastic.toJson(file)#llamamos a toJson que usa la libreria FLITZ para extraer la información del pdf
             timestamp=time.time()
             dt_object = datetime.fromtimestamp(timestamp)
 

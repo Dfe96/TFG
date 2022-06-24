@@ -6,26 +6,21 @@
 #pip install python-multipart
 #pip install pymongo
 #import http.client
-import uvicorn
 
-from fastapi import Depends, Request,File
-from typing import Any, List
+from typing import Any
 
+from fastapi import Depends, Request, File
 from fastapi.security import OAuth2PasswordRequestForm
 
-from src.models.user import *
-
-
-
-from src.services.Services import ServiceLogin,ServiceElastic
 from src.configuration import *
+from src.models.user import *
+from src.services.Services import ServiceLogin, ServiceElastic
+
 # import matplotlib.pyplot as plt
 # import requests
 # from PIL import Image
 # import io
 # MONGO CLIENT CONFIG
-
-import tempfile
 
 app=config.app
 collection=config.collection
