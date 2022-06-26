@@ -1,6 +1,7 @@
 # TFG
 
-Part 1:
+step 1:
+-
 We will start by downloading the Docker tool and docker compose inside our operating system.
 
 For linux operating systems we must run inside the command window:
@@ -17,8 +18,8 @@ NOTE: it is recommended to have Github installed to be able to do directly: "sud
 
 
 
-Part 2:
-
+step 2:
+-
 This section is closely associated with the previous section "virtualization", since in order to deploy the application we must configure the options within the file docker-compose.yml . 
 
 
@@ -40,8 +41,8 @@ It may be necessary to change the assigned ports, since the default ports of eac
 
 This would assign port 9999 to the Front-End service.
 
-Part 3 (optional) :
-
+step 3 (optional) :
+-
 Docker loads by default the Bridget network to the containers, due to the firewall security policies of certain companies, that IP may not have internet connection. The docker configuration allows us to change the range of IP addresses given to the containers.
 1. Edit or create the docker daemon configuration file:
 $sudo nano /etc/docker/daemon.json
@@ -60,8 +61,9 @@ $sudo nano /etc/docker/daemon.json
 sudo service docker restart
  
 In case you do not have access restriction in certain IP ranges you can skip this step.
- 
+
 step 4:
+-
 In this step we are going to adjust the different volumes and consequently, the Application data persistence. By default volumes have been generated in the container folder of the application or within the local storage of docker, to modify that we must go to the "volume" section of the container overwrite the first part of the command. For example if we go to the Mongo container:
   volumes:
       - ./mongo-data:/data/db → - /this/is/un/path/new:/data/db.
@@ -78,7 +80,7 @@ $docker-compose build angularcli
 
 
 step 6:
-
+-
 Finally we must tell docker-compose to run docker-compose.yml:
 
 $docker-compose up -d # -d tells docker-compose to run as daemon
@@ -88,8 +90,10 @@ In this process the necessary images for the containers will be downloaded and l
 step 6:
 
 The server can now be accessed on the selected port and we should have access to the application login window. default address and port: "http://localhost:4200"
+
 ---------------------------------------------------------------------------------------------------------------------------------
 Parte 1:
+-
 Empezaremos descargando la herramienta Docker y docker compose dentro de nuestro sistema operativo.
 
 Para sistemas operativos linux debemos ejecutar dentro de la ventana de comandos:
@@ -107,7 +111,7 @@ NOTA: se recomienda tener instalado Github para poder hacer directamente:  “su
 
 
 Parte 2:
-
+-
 Este apartado está muy asociado con el apartado anterior “virtualización”, ya que para poder desplegar la aplicación debemos configurar las opciones dentro del fichero docker-compose.yml . 
 
 
@@ -130,7 +134,7 @@ Posiblemente se requiera cambiar los puertos asignados, ya que se están usando 
 Esto asignaría el puerto 9999 al servicio de Front-End.
 
 Parte 3 (opcional) :
-
+-
 Docker carga por defecto el la red Bridget a los contenedores, debido a las políticas de seguridad del firewall de ciertas empresas, dicha IP puede no tener conexión a internet. La configuración de docker nos permite cambiar el rango de direcciones IP que se dan a los contenedores.
 1. Editar o crear el fichero de configuración del daemon de docker:
 $sudo nano /etc/docker/daemon.json
@@ -151,6 +155,7 @@ sudo service docker restart
 En caso de no tener restricción de acceso en ciertos rangos de IP se puede obviar este paso.
  
 paso 4:
+-
 En este paso vamos a ajustar los distintos volúmenes y en consecuencia, la persistencia de datos de la Aplicación. Por defecto se han generado volúmenes en la carpeta contenedora de la aplicación o dentro del almacenamiento local de docker, para modificar eso debemos ir a la sección “volume” del contenedor sobreescribir la primera parte del mandato. Por ejemplo si vamos al contenedor de Mongo:
   volumes:
       - ./mongo-data:/data/db →       - /esto/es/un/path/nuevo:/data/db
@@ -167,6 +172,7 @@ $docker-compose build angularcli
 
 
 paso 6:
+-
 
 Por último debemos indicar a docker-compose que ejecute docker-compose.yml:
 
