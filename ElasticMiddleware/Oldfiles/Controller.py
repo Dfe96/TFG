@@ -113,7 +113,7 @@ async def post_indexpdf(index: Any,author: str, id: str, file: bytes = File(), )
         raise e
 
 
-@app.get("/index")
+@app.get("/document")
 def get_Index(index: str, id: str):
     try:
         response=ServiceElastic.get_Index(index,id)
